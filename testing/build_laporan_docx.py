@@ -365,29 +365,34 @@ def setup_styles_and_numbering(doc):
     toc1 = get_or_add_style("toc 1", "TOC1")
     style_font(toc1, 12, bold=True, italic=False)
     clear_style_spacing(toc1, line_spacing=1.0, align=WD_ALIGN_PARAGRAPH.LEFT, space_before_pt=12)
+    toc1.paragraph_format.left_indent = Pt(0)
+    toc1.paragraph_format.first_line_indent = Pt(0)
     toc1.paragraph_format.tab_stops.clear_all()
     toc1.paragraph_format.tab_stops.add_tab_stop(Pt(8221 / 20.0), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.SPACES)
 
     toc2 = get_or_add_style("toc 2", "TOC2")
     style_font(toc2, 12, bold=False, italic=False)
     clear_style_spacing(toc2, line_spacing=1.0, align=WD_ALIGN_PARAGRAPH.LEFT, space_before_pt=0)
-    toc2.paragraph_format.left_indent = Pt(733 / 20.0)
+    toc2.paragraph_format.left_indent = Pt(709 / 20.0)
+    toc2.paragraph_format.first_line_indent = Pt(0)
     toc2.paragraph_format.tab_stops.clear_all()
-    toc2.paragraph_format.tab_stops.add_tab_stop(Pt(1300 / 20.0), WD_TAB_ALIGNMENT.LEFT)
+    toc2.paragraph_format.tab_stops.add_tab_stop(Pt(1150 / 20.0), WD_TAB_ALIGNMENT.LEFT)
     toc2.paragraph_format.tab_stops.add_tab_stop(Pt(8221 / 20.0), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.SPACES)
 
     toc3 = get_or_add_style("toc 3", "TOC3")
     style_font(toc3, 12, bold=False, italic=False)
     clear_style_spacing(toc3, line_spacing=1.0, align=WD_ALIGN_PARAGRAPH.LEFT, space_before_pt=0)
     toc3.paragraph_format.left_indent = Pt(960 / 20.0)
+    toc3.paragraph_format.first_line_indent = Pt(0)
     toc3.paragraph_format.tab_stops.clear_all()
-    toc3.paragraph_format.tab_stops.add_tab_stop(Pt(1760 / 20.0), WD_TAB_ALIGNMENT.LEFT)
+    toc3.paragraph_format.tab_stops.add_tab_stop(Pt(1580 / 20.0), WD_TAB_ALIGNMENT.LEFT)
     toc3.paragraph_format.tab_stops.add_tab_stop(Pt(8221 / 20.0), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.SPACES)
 
     toc4 = get_or_add_style("toc 4", "TOC4")
     style_font(toc4, 12, bold=True, italic=False)
     clear_style_spacing(toc4, line_spacing=1.0, align=WD_ALIGN_PARAGRAPH.LEFT, space_before_pt=0)
     toc4.paragraph_format.left_indent = Pt(0)
+    toc4.paragraph_format.first_line_indent = Pt(0)
     toc4.paragraph_format.tab_stops.clear_all()
     toc4.paragraph_format.tab_stops.add_tab_stop(Pt(8221 / 20.0), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.SPACES)
 
@@ -960,11 +965,11 @@ def main():
         s = ln.strip()
         if not s:
             continue
-        # Insert zero-width break after '/' inside URLs (excluding 'https://') so Word justify never stretches prior line
+        # Insert zero-width break after '://', '/', and '.' inside URLs so Word justify never stretches prior line
         def _wrap_url(m):
             u = m.group(0)
             prefix, rest = u.split("://", 1)
-            return prefix + "://" + rest.replace("/", "/\u200b")
+            return prefix + "://\u200b" + rest.replace("/", "/\u200b").replace(".", ".\u200b")
         s_fmt = re.sub(r"https?://\S+", _wrap_url, s)
         p = doc.add_paragraph()
         set_para_zero_spacing(p, line_spacing=1.5, align=WD_ALIGN_PARAGRAPH.JUSTIFY, left_indent_dxa=709, hanging_dxa=709)

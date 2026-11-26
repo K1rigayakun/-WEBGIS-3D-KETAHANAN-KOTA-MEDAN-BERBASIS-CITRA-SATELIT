@@ -82,21 +82,31 @@ def update_fields_and_export_pdf():
     word.DisplayAlerts = 0
     try:
         doc = word.Documents.Open(os.path.abspath(DOCX_PATH))
-        # Remove dot leaders from TOC 1..4 and Table of Figures styles BEFORE updating
+        # Configure TOC 1..4 and Table of Figures styles BEFORE updating (match C.15 & C.16 strictly)
         right_pos = 8221 / 20.0  # 411.05 pt
-        for sname, left_tab in [("TOC 1", None), ("TOC 2", 1300/20.0), ("TOC 3", 1760/20.0), ("TOC 4", None), ("Table of Figures", None)]:
+        toc_specs = [
+            ("TOC 1", True, 12, 0, None),
+            ("TOC 2", False, 0, 720 / 20.0, 1180 / 20.0),
+            ("TOC 3", False, 0, 960 / 20.0, 1660 / 20.0),
+            ("TOC 4", True, 0, 0, None),
+            ("Table of Figures", False, 0, 0, None),
+        ]
+        for sname, is_bold, sb_pt, left_ind, left_tab in toc_specs:
             try:
                 st = doc.Styles(sname)
                 st.Font.Name = "Times New Roman"
                 st.Font.Size = 12
                 st.Font.Color = 0
-                if sname in ("TOC 1", "TOC 4", "Table of Figures"):
-                    st.ParagraphFormat.LeftIndent = 0
-                    st.ParagraphFormat.FirstLineIndent = 0
+                st.Font.Bold = is_bold
+                st.ParagraphFormat.LineSpacingRule = 1 if sname == "Table of Figures" else 0  # 0=Single (1.0), 1=1.5
+                st.ParagraphFormat.SpaceBefore = sb_pt
+                st.ParagraphFormat.SpaceAfter = 0
+                st.ParagraphFormat.LeftIndent = left_ind
+                st.ParagraphFormat.FirstLineIndent = 0
                 st.ParagraphFormat.TabStops.ClearAll()
                 if left_tab:
-                    st.ParagraphFormat.TabStops.Add(left_tab, 0, 0)  # wdAlignTabLeft, wdTabLeaderSpaces
-                st.ParagraphFormat.TabStops.Add(right_pos, 2, 0)  # wdAlignTabRight, wdTabLeaderSpaces (no dots!)
+                    st.ParagraphFormat.TabStops.Add(left_tab, 0, 0)
+                st.ParagraphFormat.TabStops.Add(right_pos, 2, 0)
             except Exception:
                 pass
         doc.Fields.Update()
@@ -105,19 +115,36 @@ def update_fields_and_export_pdf():
         for tof in doc.TablesOfFigures:
             tof.Update()
         doc.Fields.Update()
-        # Re-enforce no dot leaders, black, no underline, spacing=0 on TOC/TOF paragraphs
+        # Re-enforce exact single line spacing, bold on TOC 1/4, zero spacing, and no dot leaders on TOC paragraphs
         for toc in doc.TablesOfContents:
             for p in toc.Range.Paragraphs:
+                st_n = str(p.Style.NameLocal)
                 p.Range.Font.Name = "Times New Roman"
                 p.Range.Font.Size = 12
                 p.Range.Font.Color = 0
                 p.Range.Font.Underline = 0
+                p.LineSpacingRule = 0  # wdLineSpaceSingle (1.0)
+                p.SpaceAfter = 0
+                p.FirstLineIndent = 0
                 p.Format.TabStops.ClearAll()
-                st_n = str(p.Style.NameLocal)
-                if "2" in st_n:
-                    p.Format.TabStops.Add(1300/20.0, 0, 0)
+                if "1" in st_n:
+                    p.Range.Font.Bold = True
+                    p.SpaceBefore = 12
+                    p.LeftIndent = 0
+                elif "4" in st_n:
+                    p.Range.Font.Bold = True
+                    p.SpaceBefore = 0
+                    p.LeftIndent = 0
+                elif "2" in st_n:
+                    p.Range.Font.Bold = False
+                    p.SpaceBefore = 0
+                    p.LeftIndent = 720 / 20.0
+                    p.Format.TabStops.Add(1180 / 20.0, 0, 0)
                 elif "3" in st_n:
-                    p.Format.TabStops.Add(1760/20.0, 0, 0)
+                    p.Range.Font.Bold = False
+                    p.SpaceBefore = 0
+                    p.LeftIndent = 960 / 20.0
+                    p.Format.TabStops.Add(1660 / 20.0, 0, 0)
                 p.Format.TabStops.Add(right_pos, 2, 0)
         for tof in doc.TablesOfFigures:
             for p in tof.Range.Paragraphs:
@@ -125,9 +152,19 @@ def update_fields_and_export_pdf():
                 p.Range.Font.Size = 12
                 p.Range.Font.Color = 0
                 p.Range.Font.Underline = 0
+                p.Range.Font.Bold = False
                 p.LineSpacingRule = 1  # wdLineSpace1pt5
+                p.SpaceBefore = 0
+                p.SpaceAfter = 0
+                p.LeftIndent = 0
+                p.FirstLineIndent = 0
                 p.Format.TabStops.ClearAll()
                 p.Format.TabStops.Add(right_pos, 2, 0)
+        # Re-run page numbers update ONLY after TOC shrank from 2 pages to 1 page!
+        for toc in doc.TablesOfContents:
+            toc.UpdatePageNumbers()
+        for tof in doc.TablesOfFigures:
+            tof.UpdatePageNumbers()
         doc.Save()
         doc.ExportAsFixedFormat(os.path.abspath(PDF_PATH), 17)  # 17 = wdExportFormatPDF
         doc.Close(False)
