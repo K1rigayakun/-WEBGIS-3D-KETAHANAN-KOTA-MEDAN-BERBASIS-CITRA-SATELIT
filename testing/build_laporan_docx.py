@@ -479,28 +479,28 @@ def build_cover(doc):
 
     # Borderless centered 2-col table for 5 members
     members = [
-        ("NAMA", "NIM", False),
-        ("[ISI: NAMA LENGKAP WILLIAM]", "[ISI: NIM WILLIAM]", True),
-        ("[ISI: NAMA LENGKAP JORDAN]", "[ISI: NIM JORDAN]", True),
-        ("[ISI: NAMA LENGKAP VISEL]", "[ISI: NIM VISEL]", True),
-        ("[ISI: NAMA LENGKAP PETER]", "[ISI: NIM PETER]", True),
-        ("MICHAEL DERYL AARON MATTHEW", "241712042", False),
+        ("NAMA", "NIM"),
+        ("WILLIAM TANU WIJAYA", "241712036"),
+        ("JORDAN IMMANUEL MUNTHE", "231712110"),
+        ("VISELA BENEDICTA SIMARMATA", "241712031"),
+        ("PETER RANGGA SITUMORANG", "241712039"),
+        ("MICHAEL DERYL AARON MATTHEW", "241712042"),
     ]
     tbl = doc.add_table(rows=len(members), cols=2)
     tbl.alignment = WD_TABLE_ALIGNMENT.CENTER
     set_table_borders(tbl, none=True)
-    col_w = [5250, 2950]  # total 8200 <= 8221, fits single line cleanly
+    col_w = [5800, 2400]  # total 8200 <= 8221, fits single line cleanly
     set_table_col_widths(tbl, col_w)
-    for idx, (nama, nim, is_ph) in enumerate(members):
+    for idx, (nama, nim) in enumerate(members):
         row = tbl.rows[idx]
         set_row_cant_split(row)
         for c_i, val in enumerate([nama, nim]):
             cell = row.cells[c_i]
-            set_cell_margins(cell, top=20, bottom=20, left=60, right=60)
+            set_cell_margins(cell, top=24, bottom=24, left=60, right=60)
             p = cell.paragraphs[0]
             set_para_zero_spacing(p, line_spacing=1.15, align=WD_ALIGN_PARAGRAPH.LEFT)
             r = p.add_run(val)
-            set_run_font(r, size_pt=14, bold=True, highlight_yellow=is_ph)
+            set_run_font(r, size_pt=14, bold=True)
 
     # Directly under table: KOM A2’24
     p_kom = doc.add_paragraph()
@@ -508,7 +508,7 @@ def build_cover(doc):
     r_k = p_kom.add_run("KOM A2\u201924")
     set_run_font(r_k, size_pt=14, bold=True)
 
-    add_blank(doc, 2, size_pt=12, line_spacing=1.0)
+    add_blank(doc, 4, size_pt=12, line_spacing=1.0)
 
     # Logo USU 5 x 5 cm
     p_logo = doc.add_paragraph()
@@ -516,7 +516,7 @@ def build_cover(doc):
     r_logo = p_logo.add_run()
     r_logo.add_picture(LOGO_PATH, width=Cm(5.0), height=Cm(5.0))
 
-    add_blank(doc, 4, size_pt=12, line_spacing=1.0)
+    add_blank(doc, 9, size_pt=12, line_spacing=1.0)
 
     inst_lines = [
         "PROGRAM STUDI D-3 TEKNIK INFORMATIKA",
@@ -553,7 +553,7 @@ def build_front_matter(doc, kp_lines):
             set_para_zero_spacing(p, line_spacing=1.5, align=WD_ALIGN_PARAGRAPH.CENTER, left_indent_dxa=5103)
             add_rich_runs(p, s, size_pt=12)
             add_blank(doc, 3, size_pt=12, line_spacing=1.0)
-        elif s == "Penulis":
+        elif s in ("Penulis", "Michael Deryl Aaron Matthew"):
             p = doc.add_paragraph()
             set_para_zero_spacing(p, line_spacing=1.5, align=WD_ALIGN_PARAGRAPH.CENTER, left_indent_dxa=5103)
             add_rich_runs(p, s, size_pt=12)
@@ -852,7 +852,7 @@ def main():
                 if "flowchart" in img_rel:
                     w_cm = 13.0
                 elif "Layout_Peta" in img_rel:
-                    w_cm = 12.6
+                    w_cm = 8.6
                 else:
                     w_cm = 10.6
                 r_im.add_picture(img_abs, width=Cm(w_cm))
@@ -960,12 +960,23 @@ def main():
         s = ln.strip()
         if not s:
             continue
+        # Insert zero-width break after '/' inside URLs (excluding 'https://') so Word justify never stretches prior line
+        def _wrap_url(m):
+            u = m.group(0)
+            prefix, rest = u.split("://", 1)
+            return prefix + "://" + rest.replace("/", "/\u200b")
+        s_fmt = re.sub(r"https?://\S+", _wrap_url, s)
         p = doc.add_paragraph()
         set_para_zero_spacing(p, line_spacing=1.5, align=WD_ALIGN_PARAGRAPH.JUSTIFY, left_indent_dxa=709, hanging_dxa=709)
-        add_rich_runs(p, s, size_pt=12)
+        add_rich_runs(p, s_fmt, size_pt=12)
 
-    doc.save(OUT_DOCX)
-    print("GENERATED:", OUT_DOCX)
+    try:
+        doc.save(OUT_DOCX)
+        print("GENERATED:", OUT_DOCX)
+    except PermissionError:
+        alt_docx = os.path.join(BASE_DIR, "Laporan_Kelompok_Final.docx")
+        doc.save(alt_docx)
+        print("LOCKED_FALLBACK_GENERATED:", alt_docx)
 
 
 if __name__ == "__main__":

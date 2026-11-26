@@ -6,7 +6,9 @@ from docx import Document
 from docx.oxml.ns import qn
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-DOCX_PATH = os.path.join(BASE_DIR, "Laporan_Kelompok.docx")
+DOCX_PRIMARY = os.path.join(BASE_DIR, "Laporan_Kelompok.docx")
+DOCX_ALT = os.path.join(BASE_DIR, "Laporan_Kelompok_Final.docx")
+DOCX_PATH = DOCX_ALT if (os.path.exists(DOCX_ALT) and (not os.path.exists(DOCX_PRIMARY) or os.path.getmtime(DOCX_ALT) >= os.path.getmtime(DOCX_PRIMARY))) else DOCX_PRIMARY
 RIS_PATH = os.path.join(BASE_DIR, "Referensi_Kelompok_Mendeley.ris")
 PDF_PATH = os.path.join(BASE_DIR, "testing", "Laporan_Kelompok_Preview.pdf")
 PREV_DIR = os.path.join(BASE_DIR, "testing", "pdf_preview")

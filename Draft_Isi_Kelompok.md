@@ -1,6 +1,6 @@
 # DRAF ISI LAPORAN PROYEK
 Judul: WEBGIS 3D KETAHANAN KOTA MEDAN BERBASIS CITRA SATELIT
-Penyusun: Kelompok (5 Anggota: William, Jordan, Visel, Peter, Michael Deryl Aaron Matthew)
+Penyusun: Kelompok (5 Anggota: William Tanu Wijaya, Jordan Immanuel Munthe, Visela Benedicta Simarmata, Peter Rangga Situmorang, Michael Deryl Aaron Matthew)
 Kelas: KOM A2’24
 Mata Kuliah: Praktikum Sistem Informasi Geografis
 
@@ -10,13 +10,13 @@ Mata Kuliah: Praktikum Sistem Informasi Geografis
 
 Puji syukur penulis panjatkan ke hadirat Tuhan Yang Maha Esa atas rahmat-Nya sehingga laporan ini selesai tepat waktu. Laporan ini mendokumentasikan proyek berjudul "WebGIS 3D Ketahanan Kota Medan Berbasis Citra Satelit". Penyusunan karya ini merupakan syarat akhir mata kuliah Praktikum Sistem Informasi Geografis pada Program Studi D-3 Teknik Informatika, Fakultas Vokasi, Universitas Sumatera Utara.
 
-Penulis mengucapkan terima kasih kepada Bapak Dr. Syahriol Sitorus, S.Si., M.IT. (NIP 197103101997031004) selaku dosen pengampu atas bimbingan selama perkuliahan. Ucapan terima kasih juga ditujukan kepada Saudara Andri Wiguna selaku asisten laboratorium. Beliau telah mendampingi proses praktikum, pengujian aplikasi, dan penyusunan proyek bersama rekan tim.
+Penulis mengucapkan terima kasih kepada Bapak Dr. Syahriol Sitorus, S.Si., M.IT. selaku dosen pengampu atas bimbingan selama perkuliahan. Ucapan terima kasih juga ditujukan kepada Saudara Andri Wiguna selaku asisten laboratorium. Beliau telah mendampingi proses praktikum, pengujian aplikasi, dan penyusunan proyek bersama rekan tim.
 
 Penulis menyadari bahwa laporan dan aplikasi ini masih punya keterbatasan pada cakupan data maupun tampilan antarmuka. Kritik serta saran yang membangun sangat penulis harapkan demi perbaikan di masa mendatang.
 
 Medan, Desember 2026
 
-Penulis
+Michael Deryl Aaron Matthew
 
 ---
 
@@ -94,7 +94,7 @@ Pemetaan suhu permukaan siang hari memakai saluran termal satelit Landsat 8 dan 
 
 Satelit Copernicus Sentinel-2 L2A merekam tutupan permukaan bumi pada resolusi 10 hingga 20 meter lewat saluran merah (B04) dan inframerah dekat (B08). Dari kedua saluran itu, kerapatan tanaman dapat dihitung memakai rumus *normalized difference vegetation index* (NDVI). Nilai NDVI mendekati nol atau negatif menandakan bangunan dan air, sedangkan nilai tinggi menandakan kanopi pohon rimbun (Sufrianto et al., 2025). Topik Jordan memakai olahan NDVI Sentinel-2 untuk mendeteksi kelurahan gersang dan menempatkan 52 titik taman saku baru.
 
-Pemodelan banjir kota butuh data ketinggian permukaan tanah dari *Digital Elevation Model* (DEM) *Shuttle Radar Topography Mission* (SRTM) resolusi 30 meter. Elevasi mentah sering kurang tepat jika dipakai langsung tanpa melihat jarak suatu lahan ke alur sungai terdekat. Metode *height above nearest drainage* (HAND) mengatasi hal itu dengan menghitung selisih tinggi lahan terhadap dasar alur sungai pengalirnya (Hu & Demir, 2021). Topik Visel memakai pendekatan HAND berbasis *client-side* dan DEM SRTM agar genangan 3D mengikuti lembah Sungai Deli, Babura, dan Belawan.
+Pemodelan banjir kota butuh data ketinggian permukaan tanah dari *Digital Elevation Model* (DEM) *Shuttle Radar Topography Mission* (SRTM) resolusi 30 meter. Elevasi mentah sering kurang tepat jika dipakai langsung tanpa melihat jarak suatu lahan ke alur sungai terdekat. Metode *height above nearest drainage* (HAND) mengatasi hal itu dengan menghitung selisih tinggi lahan terhadap dasar alur sungai pengalirnya (Hu & Demir, 2021). Topik Visela memakai pendekatan HAND berbasis *client-side* dan DEM SRTM agar genangan 3D mengikuti lembah Sungai Deli, Babura, dan Belawan.
 
 ### 2.3	Analisis Spasial Berbasis Grid Heksagon dan *Isochrone*
 
@@ -157,9 +157,9 @@ Tabel 3.1 Jadwal Penelitian
 | 7 | Pengembangan Fitur Proyek | | | K J S |
 | 8 | Penyusunan Laporan Akhir | | | J S M |
 
-Pada minggu pertama, tim menyepakati lima tema ketahanan Kota Medan, mengunduh citra satelit terbuka, dan membagi peran kerja. [ISI: Nama Lengkap William] (NIM [ISI: NIM William]) mengolah suhu panas Landsat serta jalur peneduh. [ISI: Nama Lengkap Jordan] (NIM [ISI: NIM Jordan]) mengolah indeks NDVI Sentinel-2 serta taman saku. Bagian kebencanaan dikerjakan oleh [ISI: Nama Lengkap Visel] (NIM [ISI: NIM Visel]) pada topik cekungan banjir DEM SRTM, data banjir lokal, dan rumah sakit rujukan.
+Pada minggu pertama, tim menyepakati lima tema ketahanan Kota Medan, mengunduh citra satelit terbuka, dan membagi peran kerja. William Tanu Wijaya (NIM 241712036) mengolah suhu panas Landsat serta jalur peneduh. Jordan Immanuel Munthe (NIM 231712110) mengolah indeks NDVI Sentinel-2 serta taman saku. Bagian kebencanaan dikerjakan oleh Visela Benedicta Simarmata (NIM 241712031) pada topik cekungan banjir DEM SRTM, data banjir lokal, dan rumah sakit rujukan.
 
-Sementara itu, [ISI: Nama Lengkap Peter] (NIM [ISI: NIM Peter]) mengerjakan *isochrone* jangkauan pemadam kebakaran beserta hidran darurat. Michael Deryl Aaron Matthew (NIM 241712042) mengolah zona gelap VIIRS, 81.584 bangunan 3D, sepuluh model Blender, dan integrasi penuh *WebGIS* 3D. Minggu kedua hingga ketiga diisi penyusunan berkas QGIS, penulisan kode di `web-peta-interaktif/`, pengujian sepuluh skenario Playwright, serta penyusunan laporan akhir ini.
+Sementara itu, Peter Rangga Situmorang (NIM 241712039) mengerjakan *isochrone* jangkauan pemadam kebakaran beserta hidran darurat. Michael Deryl Aaron Matthew (NIM 241712042) mengolah zona gelap VIIRS, 81.584 bangunan 3D, sepuluh model Blender, dan integrasi penuh *WebGIS* 3D. Minggu kedua hingga ketiga diisi penyusunan berkas QGIS, penulisan kode di `web-peta-interaktif/`, pengujian sepuluh skenario Playwright, serta penyusunan laporan akhir ini.
 
 ---
 
@@ -171,23 +171,49 @@ Aplikasi *WebGIS* 3D Ketahanan Kota Medan berhasil menyatukan seluruh layer masa
 
 #### 4.1.1	Hasil Analisis Spasial Lima Topik Ketahanan Kota Medan
 
-Pengolahan data di QGIS menghasilkan lima paket analisis yang mencakup seluruh 21 kecamatan Kota Medan pada grid 1.470 sel heksagon 500 meter. Untuk tema kelima mengenai zona gelap rawan begal, hasil pemetaan desktop juga dicetak ke peta tematik 300 DPI seperti tampak pada Gambar 4.1.
+Pengolahan data di QGIS menghasilkan lima proyek `.qgz` beserta lima *print layout* peta tematik beresolusi 300 DPI berdasarkan data terbaru. Kelima peta tersebut mencakup seluruh 21 kecamatan Kota Medan pada grid 1.470 sel heksagon berukuran 500 meter.
 
-![Layout Peta Tematik QGIS Orang 5](Layout_Peta_Orang5.png)
+Topik pertama yang dikerjakan William memetakan suhu permukaan siang hari dari citra Landsat 8/9 dengan suhu awal 27,39°C hingga 38,28°C. Solusi berupa 10 koridor pohon peneduh, 14 halte sejuk, dan 150 titik pohon 3D menurunkan rata-rata suhu kota dari 32,32°C ke 30,77°C seperti pada Gambar 4.1.
 
-Gambar 4.1 *Layout* Peta Tematik QGIS Zona Gelap Kota Medan
+![Layout Peta Tematik QGIS Suhu Panas dan Pohon Peneduh William](Layout_Peta_Orang1_William.png)
 
-Gambar 4.1 memperlihatkan peta cetak proyek `Medan_DarkZone_Crime_Orang5.qgz` yang menggabungkan gradasi cahaya malam VIIRS 2024 dengan 24 ruas jalan rawan kejahatan. Di atas peta tersebut tampil pula 31 kantor polisi eksisting, 217 titik lampu jalan pintar, dan 7 rute patroli malam sepanjang 196,92 km. Radiansi VIIRS Kota Medan memiliki rata-rata 28,53 DN dengan rentang 1,07 hingga 105,05 DN pada citra 665 kali 1.265 piksel. Rekapitulasi data masukan serta capaian solusi terukur untuk kelima topik disajikan pada Tabel 4.1.
+Gambar 4.1 *Layout* Peta Tematik QGIS Suhu Panas dan Pohon Peneduh
+
+Topik kedua milik Jordan mengolah citra Sentinel-2 L2A resolusi 20 meter untuk memetakan kelurahan padat yang kekurangan ruang hijau. Penambahan 52 titik taman saku hijau 3D menaikkan rata-rata indeks kehijauan NDVI dari 0,302 menjadi 0,382 sebagaimana tercantum pada Gambar 4.2.
+
+![Layout Peta Tematik QGIS Defisit RTH dan Taman Saku Jordan](Layout_Peta_Orang2_Jordan.png)
+
+Gambar 4.2 *Layout* Peta Tematik QGIS Defisit Ruang Terbuka Hijau
+
+Topik ketiga milik Visela memodelkan genangan lembah Sungai Deli, Babura, dan Belawan berbasis DEM SRTM 30 meter serta metode HAND. Pada skenario luapan +2,5 meter, penambahan 12 kolam retensi menyurutkan luas genangan dari 234,33 km² menjadi 122,19 km². Peta ini juga memuat 36 posko, 59 rumah sakit, dan 13 rute evakuasi pada Gambar 4.3.
+
+![Layout Peta Tematik QGIS Luapan Banjir dan Evakuasi Visela](Layout_Peta_Orang3_Visel.png)
+
+Gambar 4.3 *Layout* Peta Tematik QGIS Kerentanan Banjir dan Evakuasi
+
+Topik keempat yang dikerjakan Peter memetakan *blindspot* jangkauan pemadam kebakaran di luar waktu tempuh sepuluh menit memakai OpenRouteService *Isochrone*. Penambahan 20 usulan pos baru dan 16 hidran menekan bangunan luar jangkauan dari 383.754 menjadi 2.710 unit. Seluruh 31 pasar tradisional ikut terlindungi oleh jangkauan baru tersebut seperti terlihat pada Gambar 4.4.
+
+![Layout Peta Tematik QGIS Jangkauan Damkar dan Hidran Peter](Layout_Peta_Orang4_Peter.png)
+
+Gambar 4.4 *Layout* Peta Tematik QGIS Jangkauan Pemadam Kebakaran
+
+Topik kelima yang dikerjakan Michael memadukan citra malam VIIRS 2024 (rata-rata 28,53 DN) dengan 81.584 tapak gedung dan 31 kantor polisi. Pemasangan 217 lampu PJU pintar, CCTV, dan pos pantau beserta 7 rute patroli malam sepanjang 196,92 km melindungi 5.767 dari 14.229 gedung gelap seperti tampak pada Gambar 4.5.
+
+![Layout Peta Tematik QGIS Zona Gelap Kota Medan Michael](Layout_Peta_Orang5.png)
+
+Gambar 4.5 *Layout* Peta Tematik QGIS Zona Gelap Kota Medan
+
+Kelima peta tematik di atas menyajikan rincian masalah dan solusi yang berbeda pada tiap topik. Rekapitulasi lengkap sumber data, kondisi awal, dan dampak solusi dari kelima topik dirangkum pada Tabel 4.1.
 
 Tabel 4.1 Ringkasan Data Spasial dan Solusi Lima Topik Analisis
 
 | No | Topik dan Penanggung Jawab | Sumber Data Utama | Kondisi Awal (Masalah) | Solusi 3D dan Dampak Terukur |
 |---|---|---|---|---|
-| 1 | Suhu Panas dan Pohon Peneduh (William) | Citra Landsat 8/9 TIRS 30m dan jalan OpenStreetMap | Suhu rata-rata kota 32,32°C dan *hotspot* mencapai 38,3°C | 6 koridor pohon peneduh dan 10 halte sejuk; suhu rata-rata turun ke 30,77°C |
-| 2 | Kerapatan Pohon dan Taman Hijau (Jordan) | Citra Sentinel-2 L2A 20m (B04 dan B08) serta data RTH | Indeks NDVI rata-rata awal 0,302 (banyak blok gersang <= 0,111) | Penambahan 52 taman saku hijau 3D; rata-rata NDVI naik menjadi 0,382 |
-| 3 | Luapan Banjir, Rumah Sakit, dan Evakuasi (Visel) | DEM SRTM 30m, model HAND, 13 titik banjir, 59 rumah sakit | Luas genangan awal pada skenario +2,5 m mencapai 234,33 km² | 14 kolam retensi, 25 posko, dan 13 rute evakuasi; genangan surut ke 122,19 km² |
-| 4 | Jangkauan Pemadam dan Hidran (Peter) | OpenRouteService *Isochrone*, 2 pos lama, 31 pasar tradisional | Sebanyak 383.754 unit bangunan pada sel heksagon di luar jangkauan 10 menit | 16 pos pemadam baru dan 11 hidran; bangunan terlambat tersisa 2.710 unit |
-| 5 | Jalan Gelap dan Lampu PJU (Michael) | Citra VIIRS 2024, 81.584 bangunan 3D, rilis Polrestabes Medan | Tercatat 14.229 gedung gelap di sepanjang 24 ruas jalan rawan | 217 lampu PJU, CCTV, pos pantau, dan 7 rute patroli; sisa gedung gelap 8.462 unit |
+| 1 | Suhu Panas dan Pohon Peneduh (William Tanu Wijaya) | Citra Landsat 8/9 TIRS 30m dan jalan OpenStreetMap | Suhu rata-rata kota 32,32°C dan *hotspot* mencapai 38,28°C | 10 koridor pohon, 14 halte sejuk, 150 pohon 3D; suhu rata-rata turun ke 30,77°C |
+| 2 | Kerapatan Pohon dan Taman Hijau (Jordan Immanuel Munthe) | Citra Sentinel-2 L2A 20m (B04 dan B08) serta data RTH | Indeks NDVI rata-rata awal 0,302 (banyak blok gersang <= 0,111) | Penambahan 52 taman saku hijau 3D; rata-rata NDVI naik menjadi 0,382 |
+| 3 | Luapan Banjir, Rumah Sakit, dan Evakuasi (Visela Benedicta Simarmata) | DEM SRTM 30m, model HAND, 13 titik banjir, 59 rumah sakit | Luas genangan awal pada skenario +2,5 m mencapai 234,33 km² | 12 kolam retensi, 36 posko, dan 13 rute evakuasi; genangan surut ke 122,19 km² |
+| 4 | Jangkauan Pemadam dan Hidran (Peter Rangga Situmorang) | OpenRouteService *Isochrone*, 2 pos lama, 31 pasar tradisional | Sebanyak 383.754 unit bangunan agregat heksagon di luar jangkauan 10 menit | 20 usulan pos baru dan 16 hidran; bangunan terlambat tersisa 2.710 unit |
+| 5 | Jalan Gelap dan Lampu PJU (Michael Deryl Aaron Matthew) | Citra VIIRS 2024, 81.584 bangunan 3D, 31 pos polisi, Polrestabes | Tercatat 14.229 gedung gelap di sepanjang 24 ruas jalan rawan | 217 lampu PJU, CCTV, pos pantau, dan 7 rute patroli; sisa gedung gelap 8.462 unit |
 
 #### 4.1.2	Implementasi *WebGIS* 3D dan Aset Model Blender
 
@@ -239,7 +265,7 @@ Tabel 4.2 Hasil Pengujian Fungsional *WebGIS* 3D
 | 2 | Simulasi Tahap 3 Lampu PJU dan CCTV (Michael) | Terpasang 217 unit PJU; gedung gelap turun ke 8.462 unit | Berhasil |
 | 3 | Analisis Suhu Panas dan Balok 3D Heksagon (William) | Suhu rata-rata turun dari 32,32°C menjadi 30,77°C | Berhasil |
 | 4 | Analisis Kerapatan Pohon NDVI dan 52 Taman (Jordan) | Skor kehijauan rata-rata naik dari 0,302 ke 0,382 | Berhasil |
-| 5 | Simulasi Luapan Banjir DEM dan Kolam Retensi (Visel) | Luas genangan menyusut dari 234,33 km² ke 122,19 km² | Berhasil |
+| 5 | Simulasi Luapan Banjir DEM dan Kolam Retensi (Visela) | Luas genangan menyusut dari 234,33 km² ke 122,19 km² | Berhasil |
 | 6 | Analisis *Isochrone* Pemadam Kebakaran dan Hidran (Peter) | Bangunan luar jangkauan turun dari 383.754 ke 2.710 | Berhasil |
 | 7 | Mode Gabungan 5 Fitur dan Filter Kecamatan Medan Baru | Seluruh layer aktif serentak dan kamera fokus ke Medan Baru | Berhasil |
 | 8 | Pembukaan Modal Sumber Data dan Citra Satelit Mentah | Modal tampil utuh beserta 4 citra satelit dan tabel 24 ruas | Berhasil |
@@ -250,45 +276,45 @@ Tabel 4.2 Hasil Pengujian Fungsional *WebGIS* 3D
 
 Pengguna dapat mengoperasikan seluruh fitur simulasi maupun filter wilayah pada aplikasi lewat peramban desktop. Urutan langkah penggunaan *WebGIS* 3D Ketahanan Kota Medan adalah sebagai berikut:
 
-1. Jalankan berkas `JALANKAN_PETA_3D.bat` untuk membuka peladen lokal di `http://localhost:8080`. Saat halaman terbuka, sistem menampilkan topik Jalan Gelap dan Lampu PJU pada Tahap 1 seperti tampak pada Gambar 4.2.
+1. Jalankan berkas `JALANKAN_PETA_3D.bat` untuk membuka peladen lokal di `http://localhost:8080`. Saat halaman terbuka, sistem menampilkan topik Jalan Gelap dan Lampu PJU pada Tahap 1 seperti tampak pada Gambar 4.6.
 
 ![Tampilan Awal WebGIS Mode Masalah Michael](testing/screenshoot/01_awal_michael_masalah.png)
 
-Gambar 4.2 Tampilan Awal *WebGIS* 3D pada Tahap Kondisi Masalah
+Gambar 4.6 Tampilan Awal *WebGIS* 3D pada Tahap Kondisi Masalah
 
-2. Pilih tombol kamera "Medan Baru & USU" di bilah atas lalu klik "Tahap 3 Hasil & Rumus Solusi". Gedung 3D di dalam radius 217 lampu PJU dan CCTV berubah menjadi biru es terang disertai penurunan angka gedung gelap di kartu kanan pada Gambar 4.3.
+2. Pilih tombol kamera "Medan Baru & USU" di bilah atas lalu klik "Tahap 3 Hasil & Rumus Solusi". Gedung 3D di dalam radius 217 lampu PJU dan CCTV berubah menjadi biru es terang disertai penurunan angka gedung gelap di kartu kanan pada Gambar 4.7.
 
 ![Simulasi Solusi PJU 3D di Medan Baru](testing/screenshoot/02_michael_solusi_pju_3d.png)
 
-Gambar 4.3 Simulasi Tahap 3 Pemasangan 217 Titik Lampu PJU di Medan Baru
+Gambar 4.7 Simulasi Tahap 3 Pemasangan 217 Titik Lampu PJU di Medan Baru
 
-3. Klik kartu topik lain di panel kiri lalu pilih "Balok 3D" pada tombol bentuk petak untuk melihat tinggi kolom risiko. Pada Gambar 4.4, topik Suhu Panas milik William menampilkan menara heksagon 3D bersama 6 jalur pohon peneduh dan 10 halte sejuk.
+3. Klik kartu topik lain di panel kiri lalu pilih "Balok 3D" pada tombol bentuk petak untuk melihat tinggi kolom risiko. Pada Gambar 4.8, topik Suhu Panas milik William menampilkan menara heksagon 3D bersama jalur pohon peneduh dan halte sejuk.
 
 ![Visualisasi Suhu Panas UHI Balok 3D William](testing/screenshoot/03_william_uhi_3d_hex.png)
 
-Gambar 4.4 Tampilan Balok 3D Suhu Panas dan Jalur Peneduh
+Gambar 4.8 Tampilan Balok 3D Suhu Panas dan Jalur Peneduh
 
-4. Pilih kartu "Luapan Banjir Sungai, RS Rujukan & Evakuasi (Visel)" dan geser pengatur tinggi muka air sungai. Aktivasi Tahap 3 menurunkan genangan 1,5 meter lewat 14 kolam retensi beserta 59 rumah sakit rujukan dan 13 rute evakuasi pada Gambar 4.5.
+4. Pilih kartu "Luapan Banjir Sungai, RS Rujukan & Evakuasi (Visel)" dan geser pengatur tinggi muka air sungai. Aktivasi Tahap 3 menurunkan genangan 1,5 meter lewat kolam retensi beserta rumah sakit rujukan dan rute evakuasi pada Gambar 4.9.
 
-![Simulasi Luapan Banjir dan Rute Evakuasi Visel](testing/screenshoot/05_visel_banjir_evakuasi.png)
+![Simulasi Luapan Banjir dan Rute Evakuasi Visela](testing/screenshoot/05_visel_banjir_evakuasi.png)
 
-Gambar 4.5 Simulasi Luapan Banjir Berbasis DEM dan Rute Evakuasi ke Rumah Sakit
+Gambar 4.9 Simulasi Luapan Banjir Berbasis DEM dan Rute Evakuasi ke Rumah Sakit
 
-5. Pilih "Mode Gabungan Bebas (Semua Fitur)" lalu tentukan satu kecamatan pada menu "Fokus ke Kecamatan Tertentu". Gambar 4.6 memperlihatkan gabungan seluruh layer masalah dan titik solusi 3D di wilayah Kecamatan Medan Baru.
+5. Pilih "Mode Gabungan Bebas (Semua Fitur)" lalu tentukan satu kecamatan pada menu "Fokus ke Kecamatan Tertentu". Gambar 4.10 memperlihatkan gabungan seluruh layer masalah dan titik solusi 3D di wilayah Kecamatan Medan Baru.
 
 ![Mode Gabungan Semua Fitur di Kecamatan Medan Baru](testing/screenshoot/07_mode_gabungan_medan_baru.png)
 
-Gambar 4.6 Tampilan Mode Gabungan Lima Fitur pada Kecamatan Medan Baru
+Gambar 4.10 Tampilan Mode Gabungan Lima Fitur pada Kecamatan Medan Baru
 
-6. Klik tombol "Sumber Data & Bukti" di kanan atas untuk melihat citra *raster* satelit mentah beserta rumus tiap topik seperti pada Gambar 4.7. Pengguna juga bisa menekan "Bumi 3D" dan *basemap* "Mode Malam" guna melihat posisi Medan pada bola bumi di Gambar 4.8.
+6. Klik tombol "Sumber Data & Bukti" di kanan atas untuk melihat citra *raster* satelit mentah beserta rumus tiap topik seperti pada Gambar 4.11. Pengguna juga bisa menekan "Bumi 3D" dan *basemap* "Mode Malam" guna melihat posisi Medan pada bola bumi di Gambar 4.12.
 
 ![Modal Sumber Data dan Citra Satelit Mentah](testing/screenshoot/08_modal_bukti_satelit.png)
 
-Gambar 4.7 Jendela Sumber Data dan Pratinjau Empat Citra Satelit Mentah
+Gambar 4.11 Jendela Sumber Data dan Pratinjau Empat Citra Satelit Mentah
 
 ![Proyeksi Bola Dunia Mode Malam](testing/screenshoot/09_globe_3d_mode_malam.png)
 
-Gambar 4.8 Tampilan Proyeksi Bola Dunia dengan Citra Malam NASA
+Gambar 4.12 Tampilan Proyeksi Bola Dunia dengan Citra Malam NASA
 
 ---
 
@@ -298,9 +324,9 @@ Gambar 4.8 Tampilan Proyeksi Bola Dunia dengan Citra Malam NASA
 
 Seluruh tahapan pengolahan spasial di QGIS, pemodelan aset 3D Blender, dan pembangunan antarmuka *WebGIS* 3D telah selesai diuji. Lima kesimpulan utama dari hasil proyek ini adalah sebagai berikut:
 
-1. Olahan Landsat 8/9 dan Sentinel-2 pada 1.470 heksagon memetakan zona panas hingga 38,3°C dan defisit pohon, lalu simulasi peneduh menurunkan suhu ke 30,77°C serta menaikkan NDVI ke 0,382.
-2. Pemodelan banjir berbasis DEM SRTM dan metode HAND memetakan luapan sungai beserta 59 rumah sakit, sedangkan simulasi 14 kolam retensi menyurutkan genangan +2,5 m dari 234,33 km² menjadi 122,19 km².
-3. Analisis *isochrone* sepuluh menit mendeteksi 383.754 unit bangunan agregat heksagon di luar jangkauan pemadam, lalu penambahan 16 pos baru dan 11 hidran menekannya hingga tersisa 2.710 unit.
+1. Olahan Landsat 8/9 dan Sentinel-2 pada 1.470 heksagon memetakan zona panas hingga 38,28°C dan defisit pohon, lalu simulasi peneduh menurunkan suhu ke 30,77°C serta menaikkan NDVI ke 0,382.
+2. Pemodelan banjir berbasis DEM SRTM dan metode HAND memetakan luapan sungai beserta 59 rumah sakit, sedangkan simulasi 12 kolam retensi menyurutkan genangan +2,5 m dari 234,33 km² menjadi 122,19 km².
+3. Analisis *isochrone* sepuluh menit mendeteksi 383.754 unit bangunan agregat heksagon di luar jangkauan pemadam, lalu penambahan 20 pos baru dan 16 hidran menekannya hingga tersisa 2.710 unit.
 4. Penggabungan citra VIIRS 2024 dengan 81.584 tapak gedung memetakan 14.229 gedung gelap di 24 ruas jalan, dan simulasi 217 lampu PJU beserta CCTV melindungi 5.767 gedung gelap.
 5. Integrasi data lima anggota ke dalam *WebGIS* berbasis MapLibre GL JS dan Three.js lolos 10 skenario uji otomatis dengan 10 templat model 3D serta 597 instansi objek tanpa galat.
 

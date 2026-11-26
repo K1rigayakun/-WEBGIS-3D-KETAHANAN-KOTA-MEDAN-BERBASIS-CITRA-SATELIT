@@ -31,7 +31,7 @@ for line in (kp + "\n" + body).splitlines():
     if s.startswith("```"):
         in_code = not in_code
         continue
-    if in_code or s.startswith("#") or s.startswith("|") or s.startswith("!") or s.startswith("Gambar ") or s.startswith("Tabel ") or s.startswith("Medan,") or s == "Penulis" or s == "---" or not s:
+    if in_code or s.startswith("#") or s.startswith("|") or s.startswith("!") or s.startswith("Gambar ") or s.startswith("Tabel ") or s.startswith("Medan,") or s in ("Penulis", "Michael Deryl Aaron Matthew") or s == "---" or not s:
         continue
     if re.match(r"^\d+\.\s+", s):
         list_items.append(re.sub(r"^\d+\.\s+", "", s))
