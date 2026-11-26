@@ -1,0 +1,177 @@
+TY  - CONF
+AU  - Ammann, M.
+AU  - Drabble, A.
+AU  - Ingensand, J.
+AU  - Chapuis, B.
+PY  - 2022
+TI  - MapLibre-RS: Toward Portable Map Renderers
+T2  - The International Archives of the Photogrammetry, Remote Sensing and Spatial Information Sciences
+VL  - XLVIII-4/W1-2022
+SP  - 35
+EP  - 42
+DO  - 10.5194/isprs-archives-XLVIII-4-W1-2022-35-2022
+UR  - https://doi.org/10.5194/isprs-archives-XLVIII-4-W1-2022-35-2022
+ER  - 
+
+TY  - RPRT
+AU  - Butler, Howard
+AU  - Daly, Martin
+AU  - Doyle, Allan
+AU  - Gillies, Sean
+AU  - Hagen, Stefan
+AU  - Schaub, Tim
+PY  - 2016
+TI  - The GeoJSON Format (RFC 7946)
+PB  - Internet Engineering Task Force
+UR  - https://www.rfc-editor.org/info/rfc7946
+ER  - 
+
+TY  - JOUR
+AU  - Elvidge, Christopher D.
+AU  - Zhizhin, Mikhail
+AU  - Ghosh, Tilottama
+AU  - Hsu, Feng-Chi
+AU  - Taneja, Jay
+PY  - 2021
+TI  - Annual Time Series of Global VIIRS Nighttime Lights Derived from Monthly Averages: 2012 to 2019
+T2  - Remote Sensing
+VL  - 13
+IS  - 5
+SP  - 922
+DO  - 10.3390/rs13050922
+UR  - https://doi.org/10.3390/rs13050922
+ER  - 
+
+TY  - JOUR
+AU  - Evalianto, Adhi Rangga
+AU  - Mataburu, Ilham Badaruddin
+AU  - Jalaludin, Muzani
+PY  - 2024
+TI  - Analisis Lokasi Pos Damkar Berdasarkan Peta Kerawanan Kebakaran Menggunakan SIG Di Jakarta Timur
+T2  - JPIG (Jurnal Pendidikan dan Ilmu Geografi)
+VL  - 9
+IS  - 2
+SP  - 160
+EP  - 169
+DO  - 10.21067/jpig.v9i2.10301
+UR  - https://doi.org/10.21067/jpig.v9i2.10301
+ER  - 
+
+TY  - JOUR
+AU  - Hu, Anson
+AU  - Demir, Ibrahim
+PY  - 2021
+TI  - Real-Time Flood Mapping on Client-Side Web Systems Using HAND Model
+T2  - Hydrology
+VL  - 8
+IS  - 2
+SP  - 65
+DO  - 10.3390/hydrology8020065
+UR  - https://doi.org/10.3390/hydrology8020065
+ER  - 
+
+TY  - JOUR
+AU  - Kang, Wooseok
+AU  - Park, Narang
+AU  - Heo, Wookjae
+PY  - 2021
+TI  - Improvements in Evaluating Grids for Basic Living Infrastructure: The Case of Gwangjin District in Seoul, South Korea
+T2  - Social Sciences
+VL  - 10
+IS  - 1
+SP  - 26
+DO  - 10.3390/socsci10010026
+UR  - https://doi.org/10.3390/socsci10010026
+ER  - 
+
+TY  - JOUR
+AU  - Luo, Shaohua
+AU  - Liu, Yang
+AU  - Du, Mingyi
+AU  - Gao, Siyan
+AU  - Wang, Pengfei
+AU  - Liu, Xiaoyu
+PY  - 2021
+TI  - The Influence of Spatial Grid Division on the Layout Analysis of Urban Functional Areas
+T2  - ISPRS International Journal of Geo-Information
+VL  - 10
+IS  - 3
+SP  - 189
+DO  - 10.3390/ijgi10030189
+UR  - https://doi.org/10.3390/ijgi10030189
+ER  - 
+
+TY  - ELEC
+AU  - MapLibre Organization
+PY  - 2025
+TI  - MapLibre GL JS Documentation
+T2  - MapLibre
+UR  - https://maplibre.org/maplibre-gl-js/docs/
+Y2  - 2026/11/27
+ER  - 
+
+TY  - CONF
+AU  - Pohan, S. A.
+AU  - Sulistiyono, N.
+PY  - 2023
+TI  - Analysis of the Relationship Between Urban Heat Island (UHI) Phenomenon and Land Cover Change in Medan City Using Landsat Satellite Imagery
+T2  - Journal of Physics: Conference Series
+VL  - 2421
+IS  - 1
+SP  - 012017
+DO  - 10.1088/1742-6596/2421/1/012017
+UR  - https://doi.org/10.1088/1742-6596/2421/1/012017
+ER  - 
+
+TY  - JOUR
+AU  - Putri, Adelia
+AU  - Driptufany, Dwi Marsiska
+AU  - Armi, Ilham
+AU  - Arini, Dwi
+AU  - Defwaldi
+PY  - 2025
+TI  - Pemanfaatan Google Earth Engine untuk Menganalisis Pola Urban Heat Island di Kota Medan
+T2  - Jurnal Sains dan Ilmu Terapan
+VL  - 8
+IS  - 1
+SP  - 249
+EP  - 263
+DO  - 10.59061/jsit.v8i1.937
+UR  - https://doi.org/10.59061/jsit.v8i1.937
+ER  - 
+
+TY  - ELEC
+AU  - QGIS Development Team
+PY  - 2025
+TI  - QGIS User Guide (3.40): Laying Out the Maps and Raster Analysis
+T2  - QGIS Project
+UR  - https://docs.qgis.org/3.40/en/docs/user_manual/print_composer/index.html
+Y2  - 2026/11/27
+ER  - 
+
+TY  - JOUR
+AU  - Sufrianto
+AU  - Zubir, Siti Sara Yaacob
+AU  - Jassin, Andi Makkawaru Isazarni
+AU  - Brata, Joko Tri
+AU  - Danggi, Erni
+AU  - Sallu, Sulfikar
+PY  - 2025
+TI  - Sentinel-2 NDVI Analysis Using GEE and QGIS for Green Open Space Sustainability Assessment in Kendari City
+T2  - Jurnal Teknik Informatika (Jutif)
+VL  - 6
+IS  - 6
+SP  - 5522
+EP  - 5538
+DO  - 10.52436/1.jutif.2025.6.6.5409
+UR  - https://doi.org/10.52436/1.jutif.2025.6.6.5409
+ER  - 
+
+TY  - ELEC
+AU  - Three.js Authors
+PY  - 2025
+TI  - Three.js Documentation: WebGLRenderer and GLTFLoader
+T2  - Three.js
+UR  - https://threejs.org/docs/
+Y2  - 2026/11/27
+ER  - 

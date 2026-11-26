@@ -1,0 +1,222 @@
+{
+  "type": "FeatureCollection",
+  "name": "jalur_peneduh_arteri_medan",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "urn:ogc:def:crs:OGC:1.3:CRS84"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": 1,
+      "properties": {
+        "road_id": "RO-MDN-01",
+        "nama_jalan": "Jl. Kolonel Yos Sudarso",
+        "segmen": "Simpang Glugur s/d Pintu Tol Tanjung Mulia (Medan Deli)",
+        "tipe_jalan": "Arteri Primer",
+        "suhu_rata_c": 36.4,
+        "panjang_km": 4.8,
+        "jenis_pohon": "Mahoni (Swietenia macrophylla)",
+        "est_pohon": 533,
+        "prioritas": "Prioritas 1 (Kritis Panas Ekstrem)",
+        "alasan_solusi": "Koridor logistik padat dengan sempadan sempit dan pipa drainase. Akar tunggang Mahoni tumbuh lurus ke bawah tidak merusak pondasi jalan serta sangat toleran terhadap polusi jelaga solar."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.6725,
+            3.612
+          ],
+          [
+            98.6738,
+            3.626
+          ],
+          [
+            98.6755,
+            3.642
+          ],
+          [
+            98.6772,
+            3.655
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 2,
+      "properties": {
+        "road_id": "RO-MDN-02",
+        "nama_jalan": "Jl. Jenderal Gatot Subroto",
+        "segmen": "Tugu Guru Patimpus (Petisah) s/d Simpang Manhattan Ring Road",
+        "tipe_jalan": "Arteri Primer",
+        "suhu_rata_c": 35.8,
+        "panjang_km": 5.2,
+        "jenis_pohon": "Kombinasi Mahoni (Trotoar) & Trembesi (Pockets)",
+        "est_pohon": 578,
+        "prioritas": "Prioritas 1 (Kritis Panas Ekstrem)",
+        "alasan_solusi": "Koridor komersial pusat kota tanpa naungan pohon kanopi besar. Aspal hitam dan ruko beton memancarkan panas radiasi tinggi saat siang hari."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.669,
+            3.593
+          ],
+          [
+            98.655,
+            3.5915
+          ],
+          [
+            98.64,
+            3.59
+          ],
+          [
+            98.623,
+            3.588
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 3,
+      "properties": {
+        "road_id": "RO-MDN-03",
+        "nama_jalan": "Jl. Sisingamangaraja",
+        "segmen": "Stadion Teladan s/d Terminal Terpadu Amplas",
+        "tipe_jalan": "Arteri Primer",
+        "suhu_rata_c": 35.5,
+        "panjang_km": 6.1,
+        "jenis_pohon": "Trembesi (Samanea saman)",
+        "est_pohon": 678,
+        "prioritas": "Prioritas 1 (Kritis Panas Ekstrem)",
+        "alasan_solusi": "Memiliki median jalan lebar (> 2.5m). Kanopi kubah Trembesi dengan rentang 15m menurunkan suhu mikro aspal hingga 3.5°C dan menyerap emisi bus antarkota."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.688,
+            3.57
+          ],
+          [
+            98.694,
+            3.558
+          ],
+          [
+            98.701,
+            3.542
+          ],
+          [
+            98.708,
+            3.528
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 4,
+      "properties": {
+        "road_id": "RO-MDN-04",
+        "nama_jalan": "Jl. Jenderal AH Nasution",
+        "segmen": "Flyover Simpang Pos (Jamin Ginting) s/d Simpang Titikuning",
+        "tipe_jalan": "Arteri Sekunder (Ring Road Selatan)",
+        "suhu_rata_c": 34.6,
+        "panjang_km": 3.9,
+        "jenis_pohon": "Trembesi (Samanea saman)",
+        "est_pohon": 433,
+        "prioritas": "Prioritas 2 (Sedang)",
+        "alasan_solusi": "Koridor arteri lingkar selatan dengan lajur ganda dan median tanah terbuka yang sangat siap untuk penanaman pohon berkanopi peneduh masif."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.648,
+            3.535
+          ],
+          [
+            98.665,
+            3.5365
+          ],
+          [
+            98.682,
+            3.5385
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 5,
+      "properties": {
+        "road_id": "RO-MDN-05",
+        "nama_jalan": "Jl. Gagak Hitam (Ring Road Barat)",
+        "segmen": "Simpang Ring Road City Walks s/d Simpang Ngumban Surbakti",
+        "tipe_jalan": "Arteri Sekunder",
+        "suhu_rata_c": 34.9,
+        "panjang_km": 3.6,
+        "jenis_pohon": "Trembesi (Samanea saman)",
+        "est_pohon": 400,
+        "prioritas": "Prioritas 2 (Sedang)",
+        "alasan_solusi": "Koridor pertumbuhan pesat dengan aspal lebar 8 lajur yang menciptakan pulau panas mikro tajam di antara sentra bisnis baru barat Medan."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.623,
+            3.588
+          ],
+          [
+            98.6245,
+            3.572
+          ],
+          [
+            98.626,
+            3.556
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": 6,
+      "properties": {
+        "road_id": "RO-MDN-06",
+        "nama_jalan": "Jl. Letda Sujono",
+        "segmen": "Simpang Aksara s/d Gerbang Tol Bandar Selamat (Medan Tembung)",
+        "tipe_jalan": "Kolektor Primer",
+        "suhu_rata_c": 35.6,
+        "panjang_km": 3.2,
+        "jenis_pohon": "Mahoni (Swietenia macrophylla)",
+        "est_pohon": 356,
+        "prioritas": "Prioritas 1 (Kritis Panas Ekstrem)",
+        "alasan_solusi": "Jalur sempadan sangat padat aktivitas pedagang dan akses keluar-masuk tol. Memerlukan pohon bertajuk ramping ke atas dengan akar tidak membongkar saluran samping."
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            98.705,
+            3.599
+          ],
+          [
+            98.718,
+            3.601
+          ],
+          [
+            98.732,
+            3.603
+          ]
+        ]
+      }
+    }
+  ]
+}

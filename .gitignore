@@ -1,0 +1,6 @@
+.agents/
+__pycache__/
+*.pyc
+~$*.docx
+testing/pdf_preview/
+testing/*.pdf

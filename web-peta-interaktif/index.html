@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WebGIS 3D Kota Medan — Integrasi 5 Fitur Analisis &amp; Simulasi Bertahap (21 Kecamatan)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="./vendor/maplibre-gl.css?v=20261127d" rel="stylesheet" />
+  <link rel="stylesheet" href="./style.css?v=20261127d" />
+</head>
+<body>
+  <div id="map"></div>
+
+  <!-- FLOATING NAVBAR -->
+  <header class="card navbar">
+    <div class="nav-brand">
+      <div class="icon-tile icon-tile-ice">
+        <i data-lucide="map-pinned" class="icon-md"></i>
+      </div>
+      <div class="brand-text">
+        <div class="brand-name">Peta 3D Ketahanan Kota Medan</div>
+        <div class="brand-sub">Cakupan Penuh 21 Kecamatan · 1.470 Petak Wilayah · 81.584 Gedung 3D</div>
+      </div>
+    </div>
+
+    <nav class="nav-presets" aria-label="Lokasi Cepat Kamera 3D">
+      <button type="button" class="nav-link active" data-preset="overview-medan">Seluruh Medan (21 Kec.)</button>
+      <button type="button" class="nav-link" data-preset="focus-pusat">Pusat Kota &amp; Sungai Deli</button>
+      <button type="button" class="nav-link" data-preset="focus-medan-baru">Medan Baru &amp; USU</button>
+      <button type="button" class="nav-link" data-preset="focus-utara">Medan Utara (Belawan)</button>
+      <button type="button" class="nav-link" data-preset="focus-selatan">Medan Selatan (Tuntungan)</button>
+      <button type="button" class="nav-link" data-preset="globe-3d">Bumi 3D</button>
+    </nav>
+
+    <div class="nav-actions">
+      <button type="button" id="btn-bukti" class="btn btn-sm btn-ghost" title="Lihat Sumber Data Satelit &amp; Penjelasan Lengkap">
+        <i data-lucide="database" class="icon-xs"></i>
+        <span>Sumber Data &amp; Bukti</span>
+      </button>
+      <button type="button" id="btn-terrain" class="btn btn-sm btn-secondary" title="Tampilkan Kontur Ketinggian Tanah 3D">
+        <i data-lucide="mountain" class="icon-xs"></i>
+        <span>Kontur Tanah 3D</span>
+      </button>
+      <button type="button" id="btn-orbit" class="btn btn-sm btn-ghost" title="Putar Kamera 3D Otomatis">
+        <i data-lucide="rotate-cw" class="icon-xs"></i>
+        <span>Putar 3D</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- LEFT FLOATING CONTROL CARD -->
+  <aside class="card panel panel-left">
+    <div class="panel-head">
+      <div class="panel-head-title">
+        <div class="icon-tile-sm icon-tile-ice">
+          <i data-lucide="sliders-horizontal" class="icon-xs"></i>
+        </div>
+        <h2>Pilih Fitur &amp; Tahapan Simulasi</h2>
+      </div>
+      <button type="button" class="collapse-btn" data-target="left-body" aria-label="Tutup/Buka Panel Kiri">
+        <i data-lucide="chevron-up" class="icon-xs"></i>
+      </button>
+    </div>
+
+    <div id="left-body" class="panel-body">
+      <!-- PILIH FITUR & PEMBUATNYA (SETARA, TANPA NOMOR URUT A5/ORANG 1-5) -->
+      <section class="panel-section">
+        <div class="team-sec-head">
+          <h3 class="section-title">Pilih Fitur Analisis (Semua Setara)</h3>
+          <span class="insp-badge insp-badge-ice">21 Kecamatan</span>
+        </div>
+        <div class="topic-selector-list" role="radiogroup" aria-label="Pilih Fitur Analisis">
+          <button type="button" class="topic-card" data-topic="orang1">
+            <span class="icon-tile-xs tile-lamp"><i data-lucide="thermometer-sun" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Suhu Panas &amp; Pohon Peneduh (William)</span>
+              <span class="topic-card-sub">Kawasan panas terik siang hari vs Pohon Peneduh &amp; Halte Sejuk 3D</span>
+              <span class="topic-card-source">Data: Satelit Termal Landsat 8/9 USGS &amp; Jalan OpenStreetMap</span>
+            </span>
+          </button>
+
+          <button type="button" class="topic-card" data-topic="orang2">
+            <span class="icon-tile-xs tile-ice"><i data-lucide="trees" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Kerapatan Pohon &amp; Taman Hijau (Jordan)</span>
+              <span class="topic-card-sub">Area gersang minim pepohonan vs 52 Taman Hijau Baru 3D</span>
+              <span class="topic-card-source">Data: Satelit Sentinel-2 L2A (20m) ESA Copernicus &amp; RTH Medan</span>
+            </span>
+          </button>
+
+          <button type="button" class="topic-card" data-topic="orang3">
+            <span class="icon-tile-xs tile-teal"><i data-lucide="waves" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Luapan Banjir Sungai, RS Rujukan &amp; Evakuasi (Visel)</span>
+              <span class="topic-card-sub">13 Titik banjir resmi, 59 RS Rujukan &amp; luapan sungai 3D vs Solusi</span>
+              <span class="topic-card-source">Data: forestearth.id (28-29 Okt 2026), 59 RS OSM, DEM SRTM &amp; BPBD</span>
+            </span>
+          </button>
+
+          <button type="button" class="topic-card" data-topic="orang4">
+            <span class="icon-tile-xs tile-ink"><i data-lucide="flame" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Jangkauan Pemadam Kebakaran &amp; Hidran (Peter)</span>
+              <span class="topic-card-sub">Area terlambat &gt;10 menit vs Pos Pemadam Baru, Hidran &amp; 31 Pasar</span>
+              <span class="topic-card-source">Data: OpenRouteService Isochrone, Dinas Damkar Medan &amp; OSM</span>
+            </span>
+          </button>
+
+          <button type="button" class="topic-card active" data-topic="orang5">
+            <span class="icon-tile-xs tile-ink"><i data-lucide="moon" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Jalan Gelap Rawan Begal &amp; Lampu PJU (Michael)</span>
+              <span class="topic-card-sub">Area gelap malam hari vs 217 Lampu PJU Pintar, CCTV &amp; Patroli</span>
+              <span class="topic-card-source">Data: Satelit Malam Suomi-NPP VIIRS 2024, Polrestabes &amp; OSM</span>
+            </span>
+          </button>
+
+          <button type="button" class="topic-card" data-topic="gabungan">
+            <span class="icon-tile-xs tile-teal"><i data-lucide="layers" class="icon-2xs"></i></span>
+            <span class="topic-card-body">
+              <span class="topic-card-title">Mode Gabungan Bebas (Semua Fitur)</span>
+              <span class="topic-card-sub">Nyalakan atau matikan kombinasi fitur siapa saja secara bebas</span>
+              <span class="topic-card-source">Data: Gabungan Seluruh Satelit &amp; Peta 21 Kecamatan Kota Medan</span>
+            </span>
+          </button>
+        </div>
+      </section>
+
+      <!-- KOTAK TAHAPAN SIMULASI (1. KONDISI SEKARANG -> 2. TITIK SOLUSI SATU-SATU -> 3. HASIL & PERHITUNGAN) -->
+      <section class="sim-box" id="sim-card">
+        <div class="sim-top">
+          <span class="badge" id="sim-topic-badge"><span class="badge-dot"></span>Jalan Gelap &amp; PJU (Michael)</span>
+          <span class="state-chip" id="sim-state-tag">TAHAP 1: MASALAH</span>
+        </div>
+
+        <!-- 3-STAGE PROGRESSIVE SOLUTION STEPPER (BERLAKU UNTUK SEMUA FITUR) -->
+        <div class="stage-stepper" role="group" aria-label="3 Tahapan Simulasi Solusi">
+          <button type="button" class="stage-btn active" data-stage="1">
+            <span class="stage-num">Tahap 1</span>
+            <span>Kondisi Sekarang</span>
+          </button>
+          <button type="button" class="stage-btn" data-stage="2">
+            <span class="stage-num">Tahap 2</span>
+            <span>Titik Solusi (Satu-Satu)</span>
+          </button>
+          <button type="button" class="stage-btn" data-stage="3">
+            <span class="stage-num">Tahap 3</span>
+            <span>Hasil &amp; Rumus Solusi</span>
+          </button>
+        </div>
+
+        <div id="stage-progress-box" class="stage-progress-bar hidden">
+          Menempatkan Titik Solusi Satu per Satu: <span id="stage-progress-text">0 / 0</span>
+        </div>
+
+        <!-- PANE WILLIAM: SUHU PANAS & POHON PENEDUH -->
+        <div class="sim-pane hidden" id="sim-pane-orang1">
+          <p class="sim-desc">
+            <strong>Masalah (Tahap 1):</strong> Kawasan jalan raya &amp; permukiman padat di Medan bersuhu <strong>34,5°C – 38,3°C</strong> siang hari.<br/>
+            <strong>Letak Solusi (Tahap 2) &amp; Hasil (Tahap 3):</strong> Munculkan <strong>13 Jalur Pohon Peneduh &amp; 17 Halte Sejuk 3D</strong> satu per satu, lalu aktifkan penurunan suhu <strong>-2,8°C s/d -3,6°C</strong>.
+          </p>
+          <div class="calc-formula-box" id="calc-box-orang1">
+            <div class="calc-formula-title">Perhitungan Solusi Dari Mana (William):</div>
+            <div>&bull; <strong>Suhu Awal (Landsat 8/9 TIRS):</strong> Rata-rata <strong>33,84°C</strong> (348 petak hotspot &gt; 34,5°C).</div>
+            <div>&bull; <strong>Rumus Pendinginan Kanopi &amp; Cool Roof:</strong><br/><code>&Delta;T = -3,6°C &times; exp(-Jarak_Jalur / 450m) - 1,4°C &times; exp(-Jarak_Halte / 350m)</code></div>
+            <div>&bull; <strong>Hasil Akhir:</strong> Suhu rata-rata turun menjadi <strong>30,72°C (-3,12°C)</strong> dan petak panas ekstrem berkurang <strong>84%</strong>.</div>
+          </div>
+          <div class="sublayer-box">
+            <div class="sublayer-title">Pisah / Pilih Sub-Layer (William):</div>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o1-hex" checked /> <span>Petak Heksagon Suhu Panas (1.470 Petak Penuh)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o1-jalur" checked /> <span>6 Garis Koridor Jalan Pohon Peneduh (Asli William)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o1-halte" checked /> <span>10 Titik Halte Bus Sejuk &amp; Pohon 3D (Asli William)</span></label>
+            <label class="sublayer-check sublayer-sat"><input type="checkbox" id="sub-o1-sat" /> <span>Tampilkan Citra Satelit Suhu Panas Asli (Raster Landsat 8/9)</span></label>
+          </div>
+          <div class="sim-slider-box">
+            <div class="sim-slider-lbl">
+              <span>Saring Wilayah Bersuhu:</span>
+              <strong id="val-uhi-filter">Semua Suhu (&ge; 28°C)</strong>
+            </div>
+            <input type="range" id="slider-uhi-filter" min="28.0" max="36.0" step="0.5" value="28.0" />
+          </div>
+          <button type="button" id="btn-simulasi-uhi" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="sparkles" class="icon-sm"></i>
+            <span id="btn-sim-uhi-label">Jalankan Tahap 2 &rarr; 3: Munculkan Solusi &amp; Hasil</span>
+          </button>
+        </div>
+
+        <!-- PANE JORDAN: KERAPATAN POHON & TAMAN HIJAU -->
+        <div class="sim-pane hidden" id="sim-pane-orang2">
+          <p class="sim-desc">
+            <strong>Masalah (Tahap 1):</strong> Citra satelit Sentinel-2 mendeteksi kelurahan padat yang sangat gersang (indeks pohon &le; 0,111, warna merah/oranye).<br/>
+            <strong>Letak Solusi (Tahap 2) &amp; Hasil (Tahap 3):</strong> Munculkan <strong>52 Taman Saku Hijau Kelurahan 3D</strong> satu per satu di petak paling gersang, lalu lihat peningkatan kehijauan kotanya.
+          </p>
+          <div class="calc-formula-box" id="calc-box-orang2">
+            <div class="calc-formula-title">Perhitungan Solusi Dari Mana (Jordan):</div>
+            <div>&bull; <strong>Indeks Pohon Awal (Sentinel-2 Band 4 &amp; 8):</strong><br/><code>NDVI = (NIR_B08 - Red_B04) / (NIR_B08 + Red_B04)</code> (Rata-rata awal: <strong>0,264</strong>).</div>
+            <div>&bull; <strong>Rumus Injeksi Taman Saku RTH:</strong><br/><code>NDVI_Sim = NDVI_Awal + 0,24 &times; exp(-Jarak_Taman / 550m)</code></div>
+            <div>&bull; <strong>Hasil Akhir:</strong> Skor kehijauan rata-rata naik ke <strong>0,382 (+44,7%)</strong> dan petak kritis gersang turun <strong>79%</strong>.</div>
+          </div>
+          <div class="sublayer-box">
+            <div class="sublayer-title">Pisah / Pilih Sub-Layer (Jordan):</div>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o2-hex" checked /> <span>Petak Heksagon Kerapatan Pohon (1.470 Petak)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o2-taman" checked /> <span>52 Titik Solusi Taman Saku Hijau 3D</span></label>
+            <label class="sublayer-check sublayer-sat"><input type="checkbox" id="sub-o2-sat" /> <span>Tampilkan Citra Satelit Asli (Raster Sentinel-2 20m)</span></label>
+          </div>
+          <div class="seg-row" style="margin-bottom:4px">
+            <span class="seg-label">Tampilkan Warna:</span>
+            <div class="seg-group">
+              <button type="button" class="seg-btn active" data-jmode="ndvi">Kerapatan Pohon</button>
+              <button type="button" class="seg-btn" data-jmode="uhi">Suhu Udara</button>
+            </div>
+          </div>
+          <div class="sim-slider-box">
+            <div class="sim-slider-lbl">
+              <span>Saring Kerapatan Pohon:</span>
+              <strong id="val-ndvi-filter">Tampilkan Semua</strong>
+            </div>
+            <input type="range" id="slider-ndvi-filter" min="-0.20" max="0.40" step="0.05" value="-0.20" />
+          </div>
+          <button type="button" id="btn-simulasi-rth" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="trees" class="icon-sm"></i>
+            <span id="btn-sim-rth-label">Jalankan Tahap 2 &rarr; 3: Munculkan 52 Taman &amp; Hasil</span>
+          </button>
+        </div>
+
+        <!-- PANE VISEL: LUAPAN BANJIR SUNGAI, RS RUJUKAN & EVAKUASI -->
+        <div class="sim-pane hidden" id="sim-pane-orang3">
+          <p class="sim-desc">
+            <strong>Masalah (Tahap 1):</strong> Menampilkan <strong>13 Titik Lokasi Banjir Resmi</strong> (3 titik asli Visel <code>forestearth.id</code> + 10 titik banjir historis BPBD di bantaran Sungai Deli, Babura, Belawan &amp; Badera — bukan titik asal dataran rendah!), <strong>59 Rumah Sakit Rujukan 3D</strong>, serta luapan air sungai 3D.<br/>
+            <strong>Letak Solusi (Tahap 2) &amp; Hasil (Tahap 3):</strong> Munculkan <strong>14 Kolam Retensi, 25 Posko 3D &amp; Rute Evakuasi ke RS</strong> satu per satu, lalu surutkan tinggi air banjir <strong>-1,5 meter</strong>.
+          </p>
+          <div class="calc-formula-box" id="calc-box-orang3">
+            <div class="calc-formula-title">Perhitungan Solusi Dari Mana (Visel):</div>
+            <div>&bull; <strong>Data Kejadian Nyata:</strong> Banjir Medan 28–29 Okt 2026 (<code>forestearth.id</code>: Sei Mati 1,5m, Aur 1,5m, Kwala Bekala 1,0m) + 52 RS OpenStreetMap + DEM SRTM 30m.</div>
+            <div>&bull; <strong>Rumus Genangan Lembah Sungai (HAND):</strong><br/><code>Tergenang jika: HAND_Sungai &le; Tinggi_Luapan &amp; Terhubung_Alur_DAS</code></div>
+            <div>&bull; <strong>Rumus Solusi Kolam Retensi &amp; Pompa:</strong><br/><code>TMA_Efektif = max(0m, Tinggi_Luapan - 1,5m)</code> (Menampung 1,19 juta m&sup3; air &amp; menyurutkan banjir <strong>-1,5 meter</strong>).</div>
+          </div>
+          <div class="sublayer-box">
+            <div class="sublayer-title">Pisah / Pilih Sub-Layer (Visel):</div>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-titik" checked /> <span>13 Titik Banjir Resmi (Visel forestearth.id &amp; BPBD)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-rs" checked /> <span>59 Rumah Sakit Rujukan Banjir 3D (Data Visel)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-air" checked /> <span>Genangan Air Luapan Sungai 3D (DEM SRTM)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-solusi" checked /> <span>14 Kolam Retensi/Pompa (Kotak Biru) &amp; 25 Posko 3D (Titik Hijau)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-rute" checked /> <span>Garis Putus-Putus Oranye: 13 Rute Jalan Evakuasi ke RS &amp; Posko</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o3-hex" /> <span>Petak Heksagon Cekungan Banjir (1.470 Petak)</span></label>
+            <label class="sublayer-check sublayer-sat"><input type="checkbox" id="sub-o3-sat" /> <span>Tampilkan Citra Satelit Ketinggian Tanah Asli (DEM SRTM 30m)</span></label>
+          </div>
+          <div class="sim-slider-box">
+            <div class="sim-slider-lbl">
+              <span>Kenaikan Air Sungai:</span>
+              <strong id="val-flood-stage">+2,5 Meter (Luapan Sungai)</strong>
+            </div>
+            <input type="range" id="slider-flood-stage" min="0.0" max="5.0" step="0.5" value="2.5" />
+          </div>
+          <div class="sim-btn-row">
+            <button type="button" id="btn-anim-banjir" class="btn btn-secondary btn-sm">
+              <i data-lucide="play" class="icon-xs"></i>
+              <span id="btn-anim-banjir-label">Animasi Air Naik</span>
+            </button>
+            <button type="button" id="btn-reset-banjir" class="btn btn-ghost btn-sm">
+              Reset Air (0m)
+            </button>
+          </div>
+          <button type="button" id="btn-simulasi-banjir-solusi" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="shield-check" class="icon-sm"></i>
+            <span id="btn-sim-banjir-solusi-label">Jalankan Tahap 2 &rarr; 3: Kolam Retensi &amp; Surutkan Banjir</span>
+          </button>
+        </div>
+
+        <!-- PANE PETER: JANGKAUAN PEMADAM KEBAKARAN & HIDRAN -->
+        <div class="sim-pane hidden" id="sim-pane-orang4">
+          <p class="sim-desc">
+            <strong>Masalah (Tahap 1):</strong> Dari 2 pos pemadam eksisting (area hijau), mobil pemadam butuh <strong>&gt;10 menit</strong> untuk mencapai ribuan rumah &amp; pasar di pinggiran Medan (area merah).<br/>
+            <strong>Letak Solusi (Tahap 2) &amp; Hasil (Tahap 3):</strong> Munculkan <strong>16 Pos Pemadam Baru &amp; 11 Hidran Darurat 3D</strong> satu per satu, lalu perluas cakupan hijau &le;10 menit ke seluruh Medan.
+          </p>
+          <div class="calc-formula-box" id="calc-box-orang4">
+            <div class="calc-formula-title">Perhitungan Solusi Dari Mana (Peter):</div>
+            <div>&bull; <strong>Metode QGIS Difference &amp; ORS Isochrone:</strong><br/><code>Blindspot = Batas_Kota_Medan - Poligon_Isochrone_10_Menit_ORS</code></div>
+            <div>&bull; <strong>Kondisi Awal (2 Pos):</strong> Luas terjangkau 10 menit hanya <strong>87,21 km&sup2;</strong> (971 petak &amp; ribuan rumah berstatus terlambat/blindspot).</div>
+            <div>&bull; <strong>Hasil Akhir (+16 Pos &amp; +11 Hidran):</strong> Waktu tempuh rata-rata turun dari <strong>14,8 menit ke 5,2 menit</strong> (31/31 pasar &amp; 96% bangunan terjangkau &le;10 menit).</div>
+          </div>
+          <div class="sublayer-box">
+            <div class="sublayer-title">Pisah / Pilih Sub-Layer (Peter):</div>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o4-hex" checked /> <span>Petak Heksagon Area Terlambat / Blindspot (&gt;10 Menit)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o4-iso" checked /> <span>Poligon Hijau Jangkauan Cepat 5 &amp; 10 Menit (Isochrone)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o4-eks" checked /> <span>2 Pos Pemadam Eksisting &amp; 31 Titik Pasar Tradisional</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o4-sol" checked /> <span>16 Pos Pemadam Baru &amp; 11 Hidran Air Darurat 3D</span></label>
+          </div>
+          <div class="sim-slider-box">
+            <div class="sim-slider-lbl">
+              <span>Saring Kepadatan Rumah:</span>
+              <strong id="val-damkar-filter">Semua Area</strong>
+            </div>
+            <input type="range" id="slider-damkar-filter" min="0" max="500" step="50" value="0" />
+          </div>
+          <button type="button" id="btn-simulasi-damkar" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="flame" class="icon-sm"></i>
+            <span id="btn-sim-damkar-label">Jalankan Tahap 2 &rarr; 3: Pos Pemadam Baru &amp; Hasil</span>
+          </button>
+        </div>
+
+        <!-- PANE MICHAEL: JALAN GELAP RAWAN BEGAL & LAMPU PJU -->
+        <div class="sim-pane" id="sim-pane-orang5">
+          <p class="sim-desc">
+            <strong>Masalah (Tahap 1):</strong> Satelit malam mendeteksi ribuan bangunan &amp; 24 ruas jalan utama sangat gelap gulita sehingga rawan begal malam hari.<br/>
+            <strong>Letak Solusi (Tahap 2) &amp; Hasil (Tahap 3):</strong> Munculkan <strong><span id="sim-pju-count">217</span> Lampu Jalan Pintar (PJU), CCTV &amp; Pos Pantau 3D</strong> satu per satu, lalu nyalakan radius cahaya 165–210m.
+          </p>
+          <div class="calc-formula-box" id="calc-box-orang5">
+            <div class="calc-formula-title">Perhitungan Solusi Dari Mana (Michael):</div>
+            <div>&bull; <strong>Rumus Skor Kerawanan Malam (0–100):</strong><br/><code>Skor = 42% &times; Gelap_VIIRS + 33% &times; Jarak_Polisi + 25% &times; Dekat_Koridor_Begal</code></div>
+            <div>&bull; <strong>Penempatan 217 Titik PJU/CCTV:</strong> Dipilih otomatis pada segmen jalan gelap (<code>VIIRS &lt; 25 DN</code>) yang berjarak &gt;1,5 km dari polsek.</div>
+            <div>&bull; <strong>Hasil Akhir:</strong> Pancaran cahaya radius 165–210m menerangi <strong>11.480+ gedung gelap</strong> di seluruh 21 kecamatan.</div>
+          </div>
+          <div class="sublayer-box">
+            <div class="sublayer-title">Pisah / Pilih Sub-Layer (Michael):</div>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o5-hex" checked /> <span>Petak Heksagon Jalan Gelap (1.470 Petak VIIRS)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o5-koridor" checked /> <span>24 Ruas Jalan Rawan Begal (Bisa Tampil Sendiri!)</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o5-polisi" checked /> <span>31 Kantor &amp; Pos Polisi Eksisting</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o5-pju" checked /> <span>217 Titik Solusi Lampu PJU, CCTV &amp; Pos Pantau 3D</span></label>
+            <label class="sublayer-check"><input type="checkbox" id="sub-o5-patroli" checked /> <span>7 Rute Patroli Polisi Malam</span></label>
+            <label class="sublayer-check sublayer-sat"><input type="checkbox" id="sub-o5-sat" /> <span>Tampilkan Citra Satelit Malam Asli (Raster VIIRS 2024)</span></label>
+          </div>
+          <button type="button" id="btn-simulasi-pju" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="lightbulb" class="icon-sm"></i>
+            <span id="btn-sim-label">Jalankan Tahap 2 &rarr; 3: Munculkan PJU Satu-Satu &amp; Nyalakan</span>
+          </button>
+        </div>
+
+        <!-- PANE MODE GABUNGAN BEBAS -->
+        <div class="sim-pane hidden" id="sim-pane-gabungan">
+          <p class="sim-desc">
+            <strong>Mode Gabungan Semua Fitur:</strong> Kamu bebas menyalakan atau mematikan kombinasi peta masalah &amp; solusi dari siapa saja lewat sakelar di bawah.
+          </p>
+          <div class="sim-source-box">
+            <strong>Asal Data Gabungan:</strong> Landsat 8/9 TIRS (USGS), Sentinel-2 L2A (ESA), forestearth.id &amp; DEM SRTM 30m (Visel), ORS Isochrone (Peter), Suomi-NPP VIIRS 2024 (Michael), OpenStreetMap &amp; RBI 50K BIG.
+          </div>
+          <button type="button" id="btn-simulasi-semua" class="btn btn-primary btn-block btn-sm">
+            <i data-lucide="check-circle-2" class="icon-sm"></i>
+            <span id="btn-sim-semua-label">Aktifkan Seluruh Solusi Sekaligus</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- PILIHAN PETA DASAR (BEBAS API KEY & BEBAS MAP DATA NOT AVAILABLE) -->
+      <section class="panel-section">
+        <h3 class="section-title">Tampilan Peta Dasar (Tajam Sampai Zoom Maksimal)</h3>
+        <div class="basemap-grid basemap-grid-6" role="group" aria-label="Pilih Peta Dasar">
+          <button type="button" class="base-btn active" data-basemap="tematik">Peta Bersih</button>
+          <button type="button" class="base-btn" data-basemap="osm">Peta Jalan</button>
+          <button type="button" class="base-btn" data-basemap="satelit-terang">Foto Satelit</button>
+          <button type="button" class="base-btn" data-basemap="satelit">Mode Malam</button>
+          <button type="button" class="base-btn" data-basemap="topo">Topografi</button>
+          <button type="button" class="base-btn" data-basemap="3d">Kontur 3D</button>
+        </div>
+        <div class="seg-row" id="proj-mode-row">
+          <span class="seg-label">Mode Kamera:</span>
+          <div class="seg-group">
+            <button type="button" class="seg-btn active" data-projmode="mercator">Peta Kota 3D</button>
+            <button type="button" class="seg-btn" data-projmode="globe">Bola Dunia</button>
+          </div>
+        </div>
+        <div class="opacity-row">
+          <label for="slider-opacity">Ketebalan Warna Peta: <strong id="opacity-val">90%</strong></label>
+          <input type="range" id="slider-opacity" min="15" max="100" step="5" value="90" />
+        </div>
+      </section>
+
+      <!-- SAKELAR LAYER UTAMA & CITRA SATELIT ASLI -->
+      <section class="panel-section">
+        <div class="team-sec-head">
+          <h3 class="section-title">Sakelar Layer Utama &amp; Satelit Asli</h3>
+          <button type="button" id="btn-toggle-all-team" class="btn btn-xs btn-ghost">Nyalakan Semua</button>
+        </div>
+        <div class="layer-list">
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-lamp"><i data-lucide="thermometer-sun" class="icon-2xs"></i></span>
+              <span class="layer-label">Suhu Panas &amp; Pohon Peneduh (William)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-team-1" />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-ice"><i data-lucide="trees" class="icon-2xs"></i></span>
+              <span class="layer-label">Kerapatan Pohon &amp; Taman Hijau (Jordan)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-team-2" />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-teal"><i data-lucide="waves" class="icon-2xs"></i></span>
+              <span class="layer-label">Luapan Banjir Sungai, RS Rujukan &amp; Evakuasi (Visel)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-team-3" />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-ink"><i data-lucide="flame" class="icon-2xs"></i></span>
+              <span class="layer-label">Jangkauan Pemadam &amp; Hidran (Peter)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-team-4" />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-ink"><i data-lucide="moon" class="icon-2xs"></i></span>
+              <span class="layer-label">Jalan Gelap Rawan Begal &amp; PJU (Michael)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-team-5" checked />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-ink"><i data-lucide="building-2" class="icon-2xs"></i></span>
+              <span class="layer-label">Gedung &amp; Rumah 3D (81.584 Gedung · 21 Kec.)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-buildings" checked />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-teal"><i data-lucide="hexagon" class="icon-2xs"></i></span>
+              <span class="layer-label">Petak Wilayah Heksagon (1.470 Petak · 21 Kec.)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-hex" checked />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <div class="seg-row">
+            <span class="seg-label">Bentuk Petak:</span>
+            <div class="seg-group">
+              <button type="button" class="seg-btn active" data-hexmode="flat">Datar 2D</button>
+              <button type="button" class="seg-btn" data-hexmode="3d">Balok 3D</button>
+            </div>
+          </div>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-lamp"><i data-lucide="box" class="icon-2xs"></i></span>
+              <span class="layer-label">Model 3D Solusi (Lampu, Halte, RS, Pos, Hidran, Pohon)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-models-3d" checked />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-ice"><i data-lucide="waves" class="icon-2xs"></i></span>
+              <span class="layer-label">Jaringan Sungai &amp; Kanal (88 Ruas · 21 Kec.)</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-water" />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+
+          <label class="layer-row">
+            <span class="layer-left">
+              <span class="icon-tile-xs tile-paper"><i data-lucide="map" class="icon-2xs"></i></span>
+              <span class="layer-label">Garis Batas 21 Kecamatan Kota Medan</span>
+            </span>
+            <span class="switch">
+              <input type="checkbox" id="lyr-kec" checked />
+              <span class="switch-track"><span class="switch-knob"></span></span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <!-- FILTER KECAMATAN -->
+      <section class="panel-section">
+        <h3 class="section-title">Fokus ke Kecamatan Tertentu</h3>
+        <div class="filter-stack">
+          <div class="field">
+            <select id="filter-kecamatan">
+              <option value="ALL">Tampilkan Seluruh Kota Medan (21 Kecamatan)</option>
+            </select>
+          </div>
+        </div>
+      </section>
+    </div>
+  </aside>
+
+  <!-- RIGHT FLOATING ANALYTICS CARD -->
+  <aside class="card panel panel-right">
+    <div class="panel-head">
+      <div class="panel-head-title">
+        <div class="icon-tile-sm icon-tile-teal">
+          <i data-lucide="bar-chart-3" class="icon-xs"></i>
+        </div>
+        <h2>Ringkasan Data &amp; Detail Klik</h2>
+      </div>
+      <button type="button" class="collapse-btn" data-target="right-body" aria-label="Tutup/Buka Panel Kanan">
+        <i data-lucide="chevron-up" class="icon-xs"></i>
+      </button>
+    </div>
+
+    <div id="right-body" class="panel-body">
+      <!-- KPI 2x2 -->
+      <section class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label" id="kpi-1-label">CAKUPAN WILAYAH</div>
+          <div class="kpi-val" id="kpi-buildings">--</div>
+          <div class="kpi-sub" id="kpi-1-sub">Seluruh 21 Kecamatan</div>
+        </div>
+        <div class="kpi-card kpi-dark-mode" id="kpi-dark-card">
+          <div class="kpi-label" id="kpi-dark-label">MASALAH TERDETEKSI</div>
+          <div class="kpi-val" id="kpi-dark-buildings">--</div>
+          <div class="kpi-sub" id="kpi-dark-sub">Sebelum solusi</div>
+        </div>
+        <div class="kpi-card kpi-ice">
+          <div class="kpi-label" id="kpi-3-label">SOLUSI DIBANGUN</div>
+          <div class="kpi-val" id="kpi-pju">--</div>
+          <div class="kpi-sub" id="kpi-3-sub">Titik intervensi 3D</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label" id="kpi-4-label">HASIL PERBAIKAN</div>
+          <div class="kpi-val" id="kpi-corridors">--</div>
+          <div class="kpi-sub" id="kpi-4-sub">Kondisi wilayah</div>
+        </div>
+      </section>
+
+      <!-- TOP KECAMATAN CHART -->
+      <section class="panel-section">
+        <h3 class="section-title" id="chart-sec-title">Kecamatan Paling Prioritas</h3>
+        <div id="kec-chart" class="bar-chart"></div>
+      </section>
+
+      <!-- FEATURE INSPECTOR -->
+      <section class="panel-section">
+        <h3 class="section-title">Penjelasan Objek &amp; Rumus Perhitungan</h3>
+        <div id="inspector-box" class="card-soft inspector-box">
+          <div class="inspector-empty">
+            <div class="icon-tile icon-tile-ice">
+              <i data-lucide="mouse-pointer-click" class="icon-sm"></i>
+            </div>
+            <p><strong>Klik bagian mana saja di peta</strong> (petak wilayah, gedung 3D, titik banjir Visel, rumah sakit 3D, air banjir, kolam retensi, jalur pohon, halte, taman hijau, pos pemadam, hidran, pasar, atau lampu jalan) untuk membaca detail masalah, rumus perhitungan solusi, dan sumber datanya.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- EMERGENCY CALLOUT -->
+      <section class="emergency-card">
+        <div class="emg-row">
+          <div class="icon-tile-sm icon-tile-ink">
+            <i data-lucide="phone-call" class="icon-xs"></i>
+          </div>
+          <div>
+            <div class="emg-title">Nomor Darurat Kota Medan</div>
+            <div class="emg-nums">Polisi: <strong>110</strong> · Pemadam Kebakaran: <strong>113</strong> · Banjir/BPBD: <strong>112</strong></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </aside>
+
+  <!-- CLEAR, EASY-TO-READ COLLAPSIBLE LEGEND CARD -->
+  <section class="card legend-card" aria-label="Arti Warna Peta">
+    <div class="legend-top-row">
+      <div class="legend-head" id="dynamic-legend-title">Arti Warna, Simbol 3D &amp; Sumber Data</div>
+      <button type="button" class="collapse-btn legend-collapse-btn" data-target="legend-body" aria-label="Buka/Tutup Legenda">
+        <i data-lucide="chevron-down" class="icon-xs"></i>
+      </button>
+    </div>
+
+    <div id="legend-body" class="legend-body">
+      <div class="legend-sec" id="legend-dynamic-content">
+        <!-- Diisi otomatis sesuai fitur aktif dengan bahasa yang sangat jelas + sumber data -->
+      </div>
+    </div>
+
+    <div class="legend-note">
+      <span id="team-active-badge">FITUR AKTIF: JALAN GELAP &amp; LAMPU PJU (MICHAEL)</span> · <span id="proj-badge">PETA KOTA 3D</span> · SUDUT <span id="telemetry-text">60° | Z 12.2</span>
+    </div>
+  </section>
+
+  <!-- FOOTER STRIP -->
+  <footer class="footer-pill">
+    <span class="footer-coords" id="cursor-coords">KOORDINAT: 98.6620 BT, 3.5810 LU · KOTA MEDAN (21 KECAMATAN)</span>
+    <span class="footer-sep">|</span>
+    <span class="footer-src">Suhu Panas (William) · Taman Hijau (Jordan) · Banjir &amp; RS Rujukan (Visel) · Pemadam (Peter) · Lampu Jalan (Michael)</span>
+  </footer>
+
+  <!-- EVIDENCE & DATA PROVENANCE MODAL -->
+  <div id="modal-bukti" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="card modal-card">
+      <div class="modal-head">
+        <div class="panel-head-title">
+          <div class="icon-tile-sm icon-tile-ice"><i data-lucide="database" class="icon-xs"></i></div>
+          <h2 id="modal-title">Daftar Lengkap Fitur, Pembuat, Sumber Data Resmi &amp; Rumus Perhitungan Solusi</h2>
+        </div>
+        <button type="button" id="btn-close-modal" class="collapse-btn" aria-label="Tutup Modal">
+          <i data-lucide="x" class="icon-xs"></i>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <section class="modal-sec">
+          <h3>1. Citra Satelit Mentah Asli 1 Kota Medan Penuh (Bisa Ditampilkan Langsung di Atas Peta!)</h3>
+          <div class="raster-proof-grid">
+            <div class="proof-box">
+              <div class="proof-box-head">
+                <strong>Satelit Suhu Panas (William)</strong>
+                <span class="badge">Landsat 8/9 TIRS 30m</span>
+              </div>
+              <div class="proof-img-row">
+                <img id="proof-img-lst" alt="Citra Satelit Termal Suhu Permukaan Kota Medan" />
+                <div class="proof-stats" id="proof-stats-lst">Memuat data...</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-modal-show-lst">
+                Tampilkan Raster Satelit Suhu Landsat di Peta
+              </button>
+            </div>
+
+            <div class="proof-box">
+              <div class="proof-box-head">
+                <strong>Satelit Cahaya Malam (Michael)</strong>
+                <span class="badge">Suomi-NPP VIIRS 2024</span>
+              </div>
+              <div class="proof-img-row">
+                <img id="proof-img-viirs" alt="Citra Satelit Malam Kota Medan" />
+                <div class="proof-stats" id="proof-stats-viirs">Memuat data...</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-modal-show-viirs">
+                Tampilkan Raster Satelit Malam VIIRS di Peta
+              </button>
+            </div>
+
+            <div class="proof-box">
+              <div class="proof-box-head">
+                <strong>Satelit Kerapatan Pohon (Jordan)</strong>
+                <span class="badge">Sentinel-2 L2A 20m</span>
+              </div>
+              <div class="proof-img-row">
+                <img id="proof-img-ndvi" alt="Citra Kerapatan Pohon Kota Medan" />
+                <div class="proof-stats" id="proof-stats-ndvi">Memuat data...</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-modal-show-ndvi">
+                Tampilkan Raster Satelit Sentinel-2 di Peta
+              </button>
+            </div>
+
+            <div class="proof-box">
+              <div class="proof-box-head">
+                <strong>Topografi Banjir &amp; RS Rujukan (Visel)</strong>
+                <span class="badge">DEM SRTM 30m USGS</span>
+              </div>
+              <div class="proof-img-row">
+                <img id="proof-img-dem" alt="Peta Ketinggian Tanah Kota Medan" />
+                <div class="proof-stats" id="proof-stats-dem">Memuat data...</div>
+              </div>
+              <button type="button" class="btn btn-sm btn-secondary" id="btn-modal-show-dem">
+                Tampilkan Raster Topografi DEM di Peta
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="modal-sec">
+          <h3>2. Rangkuman Fitur, Nama Pembuat, Asal Sumber Data &amp; Rumus Perhitungan Solusi</h3>
+          <div class="modal-table-wrap" style="max-height:340px">
+            <table class="proof-table">
+              <thead>
+                <tr>
+                  <th>Nama Fitur &amp; Pembuat</th>
+                  <th>Dapat Datanya Dari Mana (Sumber Data Resmi)</th>
+                  <th>Masalah di Kota Medan</th>
+                  <th>Tahapan &amp; Rumus Perhitungan Solusi di Peta 3D</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Suhu Panas &amp; Pohon Peneduh (William)</strong></td>
+                  <td>
+                    <strong>1. Citra Satelit Termal Landsat 8/9 OLI/TIRS</strong> (USGS EarthExplorer — suhu permukaan tanah siang hari).<br/>
+                    <strong>2. Jaringan Jalan Arteri OpenStreetMap</strong> &amp; Batas 21 Kecamatan RBI 50K BIG.
+                  </td>
+                  <td>Kawasan jalan raya dan permukiman padat memiliki suhu permukaan siang hari mencapai <strong>34,5°C – 38,3°C</strong> akibat aspal terbuka minim pohon peneduh.</td>
+                  <td><strong>Rumus:</strong> <code>&Delta;T = -3,6°C &times; exp(-Jarak_Jalur/450m) - 1,4°C &times; exp(-Jarak_Halte/350m)</code>. Menanam pohon peneduh (<em>Trembesi &amp; Mahoni</em>) di 13 koridor jalan arteri utama serta membangun <strong>17 Halte Bus Beratap Sejuk 3D</strong>, menurunkan suhu rata-rata dari 33,84°C ke 30,72°C.</td>
+                </tr>
+                <tr>
+                  <td><strong>Kerapatan Pohon &amp; Taman Hijau (Jordan)</strong></td>
+                  <td>
+                    <strong>1. Citra Satelit Copernicus Sentinel-2 L2A</strong> Band 4 (Red) &amp; Band 8 (Near-Infrared) resolusi 20 meter (European Space Agency / ESA, 23 Agustus 2026).<br/>
+                    <strong>2. Standar RTH Perkotaan UU No. 26/2007</strong> &amp; RTRW Kota Medan.
+                  </td>
+                  <td>Hasil pengolahan indeks kehijauan pohon (<code>NDVI = (B08-B04)/(B08+B04)</code>) dari satelit Sentinel-2 menunjukkan banyak kelurahan padat memiliki tutupan pohon sangat rendah (&le; 0,111).</td>
+                  <td><strong>Rumus:</strong> <code>NDVI_Sim = NDVI_Awal + 0,24 &times; exp(-Jarak_Taman/550m)</code>. Membangun <strong>52 Taman Saku Hijau Kelurahan (Pocket Park) 3D</strong> sehingga rata-rata NDVI naik dari 0,264 ke 0,382 (+44,7%).</td>
+                </tr>
+                <tr>
+                  <td><strong>Luapan Banjir Sungai, RS Rujukan &amp; Evakuasi (Visel)</strong></td>
+                  <td>
+                    <strong>1. Data Kejadian Banjir Medan 28–29 Oktober 2026 (forestearth.id &amp; BPBD Kota Medan)</strong> — 13 lokasi banjir historis resmi di bantaran sungai (Sei Mati 1,5m, Aur 1,5m, Kwala Bekala 1,0m, dll.).<br/>
+                    <strong>2. Data 59 Rumah Sakit Kota Medan (OpenStreetMap Overpass API)</strong> yang diverifikasi terhadap kecamatan terdampak banjir.<br/>
+                    <strong>3. Topografi DEM SRTM 30m (USGS / BIG)</strong> &amp; 88 Ruas Sungai DAS Deli, Babura, Belawan, Denai, Kera, Badera.
+                  </td>
+                  <td>Luapan Sungai Deli, Babura, Belawan, dan Badera merendam kelurahan di cekungan lembah sungai serta mengancam akses menuju rumah sakit di kecamatan terdampak banjir.</td>
+                  <td><strong>Rumus:</strong> <code>TMA_Efektif = max(0m, Tinggi_Luapan - 1,5m)</code>. Mengaktifkan <strong>14 Kolam Retensi &amp; Pompa Air</strong> (menyurutkan banjir -1,5m), <strong>25 Posko Evakuasi Tanah Tinggi 3D</strong>, serta <strong>Rute Evakuasi Medis ke 59 Rumah Sakit Rujukan 3D</strong>.</td>
+                </tr>
+                <tr>
+                  <td><strong>Jangkauan Pemadam Kebakaran &amp; Hidran (Peter)</strong></td>
+                  <td>
+                    <strong>1. OpenRouteService (ORS) Isochrone API</strong> (profil <em>driving-car</em> waktu tempuh 5 &amp; 10 menit melalui jaringan jalan riil).<br/>
+                    <strong>2. Data Pos Dinas P2K (Damkar) Kota Medan</strong>, Titik 31 Pasar Tradisional PD Pasar &amp; 81.584 Tapak Bangunan OpenStreetMap.
+                  </td>
+                  <td>Dengan hanya 2 pos pemadam eksisting (87,21 km&sup2;), mobil pemadam membutuhkan waktu <strong>lebih dari 10 menit</strong> untuk mencapai ribuan rumah dan pasar di kecamatan pinggiran Medan.</td>
+                  <td><strong>Rumus:</strong> <code>Blindspot = Area_Medan - Isochrone_10m_ORS</code>. Menambah <strong>16 Pos Pemadam Kebakaran Baru 3D</strong> dan <strong>11 Hidran Air Darurat</strong> di dekat pasar tradisional sehingga waktu respon rata-rata turun dari 14,8 menit ke 5,2 menit.</td>
+                </tr>
+                <tr>
+                  <td><strong>Jalan Gelap Rawan Begal &amp; Lampu PJU (Michael)</strong></td>
+                  <td>
+                    <strong>1. Citra Satelit Malam Suomi-NPP VIIRS V2.1 Tahun 2024</strong> (Earth Observation Group / OpenGeoHub Zenodo DOI:10.5281/zenodo.17294744).<br/>
+                    <strong>2. Rilis Pemetaan Jalan Rawan KRYD Polrestabes Medan</strong>, 31 Kantor/Pos Polisi &amp; Jaringan Jalan OSRM/OpenStreetMap.
+                  </td>
+                  <td>Citra satelit malam mendeteksi 24 ruas jalan raya dan ribuan bangunan berada di area gelap gulita (<code>VIIRS &lt; 25 DN</code>) yang rawan kejahatan jalanan (begal) malam hari.</td>
+                  <td><strong>Rumus Skor:</strong> <code>42% Gelap_VIIRS + 33% Jarak_Polisi + 25% Koridor_Begal</code>. Menyalakan <strong>217 Lampu Jalan Pintar (PJU), Kamera CCTV &amp; Pos Pantau 3D</strong> (radius cahaya 165–210m) serta <strong>7 Rute Patroli Malam (196,9 km)</strong>.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="modal-sec">
+          <h3>3. Daftar 24 Ruas Jalan Rawan Kejahatan Malam (Data Kepolisian Polrestabes Medan &amp; Satelit Malam VIIRS)</h3>
+          <div class="modal-table-wrap">
+            <table class="proof-table" id="modal-corridors-table">
+              <thead>
+                <tr>
+                  <th>Nama Ruas Jalan</th>
+                  <th>Kecamatan</th>
+                  <th>Panjang</th>
+                  <th>Tingkat Cahaya Malam</th>
+                  <th>Catatan Kerawanan &amp; Sumber Rilis</th>
+                  <th>Lihat Lokasi</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <script src="./vendor/lucide.min.js?v=20261127d"></script>
+  <script>if(window.lucide)window.lucide.createIcons();</script>
+  <script src="./vendor/anime.umd.js?v=20261127d"></script>
+  <script src="./vendor/maplibre-gl.js?v=20261127d"></script>
+  <script src="./data/spatial_bundle.js?v=20261127d"></script>
+  <script src="./data/models_bundle.js?v=20261127d"></script>
+  <script src="./data/ra_overlays_bundle.js?v=20261127d"></script>
+  <script src="./data/team_layers_bundle.js?v=20261127d"></script>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as THREE from "three";
+    import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+    window.THREE = THREE;
+    window.GLTFLoader = GLTFLoader;
+    window.dispatchEvent(new Event("three-ready"));
+  </script>
+  <script src="./app.js?v=20261127d"></script>
+</body>
+</html>
